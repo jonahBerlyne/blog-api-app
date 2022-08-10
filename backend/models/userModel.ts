@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const User = new Schema({
- username: {
+ name: {
   type: String,
-  required: [true, "Please add your username"],
+  required: [true, "Please add your name"],
   trim: true,
   minLength: 5,
-  maxLength: [20, "Username can only be 20 characters max."]
+  maxLength: [20, "Name can only be 20 characters max."]
  },
  password: {
   type: String,
