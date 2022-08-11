@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { UserInt } from "../config/interface";
+
 const Schema = mongoose.Schema;
 
 const User = new Schema({
@@ -37,4 +39,4 @@ const User = new Schema({
  }
 }, { timestamps: true });
 
-export default mongoose.model("User", User);
+export default mongoose.model<UserInt>("User", User);
