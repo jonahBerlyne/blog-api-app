@@ -24,7 +24,8 @@
     "nodemailer": "^6.7.7",
     "passport": "^0.6.0",
     "passport-session": "^1.0.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "twilio": "^3.80.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

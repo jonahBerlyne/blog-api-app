@@ -16,7 +16,7 @@ const User = new Schema({
  },
  account: {
   type: String,
-  required: [true, "Pleasee add your phone or email"],
+  required: [true, "Please add your phone or email"],
   trim: true,
   unique: true
  },
