@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { ParamsInt } from './utils/interface';
+import { ParamsInt } from './utils/tsDefs';
 import NotFound from './components/global/NotFound';
 
 const generatePage = (name: string) => {

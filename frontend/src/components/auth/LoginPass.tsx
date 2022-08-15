@@ -1,0 +1,43 @@
+import React, { useState } from 'react';
+import { InputChange } from '../../utils/tsDefs';
+
+const LoginPass = () => {
+  const initialState = {
+   account: '',
+   password: ''
+  };
+
+  const [userLogin, setUserLogin] = useState<any>(initialState);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const { account, password } = userLogin;
+
+  const handleChange = (e: InputChange): void => setUserLogin({
+   ...userLogin,
+   [e.target.name]: e.target.value
+  });
+
+  return (
+    <form>
+     <div className="form-group mb-3">
+      <label htmlFor="account" className="form-label">Email/Phone</label>
+      <input type="text" className="form-control" id="account" name="account" value={account} onChange={handleChange} />
+     </div>
+
+     <div className="form-group mb-3">
+      <label htmlFor="password" className="form-label">Password</label>
+      <div className="password_input">
+       <input type={showPassword ? "text" : "password"} className="form-control" id="password" name="password" value={password} onChange={handleChange} />
+
+       <small onClick={() => setShowPassword(!showPassword)}>
+        {showPassword ? "Hide" : "Show"}
+       </small>
+      </div>
+     </div>
+
+     <button className="btn btn-dark w-100 mt-1" type='submit' disabled={(account && password) ? false : true}>Login</button>
+    </form>
+  );
+}
+
+export default LoginPass;
