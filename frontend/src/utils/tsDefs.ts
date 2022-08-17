@@ -17,6 +17,11 @@ export interface UserLoginInt {
  password: string;
 }
 
+export interface UserRegisterInt extends UserLoginInt {
+ name: string;
+ confirmPassword: string;
+}
+
 export interface UserInt extends UserLoginInt {
  avatar: string;
  createdAt: string;
