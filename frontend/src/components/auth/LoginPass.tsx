@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { InputChange } from '../../utils/tsDefs';
+import { useAppDispatch } from '../../redux/hooks';
+import { InputChange, FormSubmit, UserLoginInt } from '../../utils/tsDefs';
+import { login } from '../../redux/actions/authAction';
 
 const LoginPass = () => {
   const initialState = {
@@ -17,8 +19,15 @@ const LoginPass = () => {
    [e.target.name]: e.target.value
   });
 
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = (e: FormSubmit): void => {
+    e.preventDefault();
+    dispatch(login(userLogin));
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
      <div className="form-group mb-3">
       <label htmlFor="account" className="form-label">Email/Phone</label>
       <input type="text" className="form-control" id="account" name="account" value={account} onChange={handleChange} />

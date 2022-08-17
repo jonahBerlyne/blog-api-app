@@ -4,7 +4,11 @@ import { ParamsInt } from './utils/tsDefs';
 import NotFound from './components/global/NotFound';
 
 const generatePage = (name: string) => {
- const component = () => require(`./pages/${name}`).default;
+ const component = (): NodeRequire => {
+  if (name === '') return require('./pages/index').default;
+  return require(`./pages/${name}`).default;
+ }
+
  try {
   return React.createElement(component());
  } catch (error) {
@@ -14,7 +18,6 @@ const generatePage = (name: string) => {
 
 const PageRender = () => {
   const { page, slug }: ParamsInt = useParams();
-
   let name = '';
 
   if (page) {
