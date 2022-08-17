@@ -20,10 +20,11 @@ app.use(cookieParser());
 
 app.use("/api", authRoute);
 
+const PORT = process.env.PORT || 5000;
+
 const mongoDB = process.env.MONGO_URI;
 mongoose.connect(`${mongoDB}`)
         .then(() => {
-         const PORT = process.env.PORT || 5000;
-         app.listen(() => console.log(`Listening on Port ${PORT}...`));
+         app.listen(PORT, () => console.log(`Listening on Port ${PORT}...`));
         })
         .catch(err => console.log(`MongoDB connection error: ${err}`));
