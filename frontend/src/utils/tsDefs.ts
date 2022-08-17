@@ -1,8 +1,11 @@
 import { ChangeEvent, FormEvent } from "react";
+import { rootReducer } from "../redux/reducers/rootReducer";
 
 export type InputChange = ChangeEvent<HTMLInputElement>;
 
 export type FormSubmit = FormEvent<HTMLFormElement>;
+
+export type RootStore = ReturnType<typeof rootReducer>;
 
 export interface ParamsInt {
  page?: string;
@@ -22,4 +25,10 @@ export interface UserInt extends UserLoginInt {
  type: string;
  updatedAt: string;
  _id: string;
+}
+
+export interface AlertInt {
+ loading?: boolean;
+ success?: string | string[],
+ errors?: string | string[]
 }
