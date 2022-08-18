@@ -1,5 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { logout } from '../../redux/actions/authAction';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { RootStore } from '../../utils/tsDefs';
 
 const Menu = () => {
   const authLinks = [
@@ -13,25 +16,50 @@ const Menu = () => {
    },
   ];
 
+  const otherLinks = [
+   {
+    name: "Home",
+    path: "/"
+   },
+   {
+    name: "Create Blog",
+    path: "/create_blog"
+   },
+  ];
+
+  const { auth } = useAppSelector((state: RootStore) => state);
+
+  const navLinks = auth.access_token ? otherLinks : authLinks;
+
+  const { pathname } = useLocation();
+
+  const isActive = (pn: string) => {
+    if (pn === pathname) return 'active';
+  }
+
+  const dispatch = useAppDispatch();
+
   return (
    <ul className="navbar-nav ms-auto">
-    {authLinks.map((link, index) => {
+    {navLinks.map((link, index) => {
      return (
-      <li className="nav-item active" key={index}>
+      <li className={`nav-item active ${isActive(link.path)}`} key={index}>
         <Link className="nav-link" to={link.path}>{link.name}</Link>
       </li>
      );          
     })}
-    <li className="nav-item dropdown">
-      <span className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Username
-      </span>
-      <div className="dropdown-menu">
-        <Link className="dropdown-item" to="/profile">Profile</Link>
-        <div className="dropdown-divider"></div>
-        <Link className="dropdown-item" to="/">Logout</Link>
-      </div>
-    </li>
+    {auth.user &&     
+      <li className="nav-item dropdown">
+        <span className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src={auth.user.avatar} alt="Avatar" className='avatar' />
+        </span>
+        <div className="dropdown-menu">
+          <Link className="dropdown-item" to="/profile">Profile</Link>
+          <div className="dropdown-divider"></div>
+          <Link className="dropdown-item" to="/" onClick={() => dispatch(logout())}>Logout</Link>
+        </div>
+      </li>
+    }
    </ul>
   );
 }

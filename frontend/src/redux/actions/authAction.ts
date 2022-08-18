@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { AUTH, AuthTypeInt } from "../types/authTypes";
-import { postAPI } from "../../utils/FetchData";
+import { postAPI, getAPI } from "../../utils/FetchData";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
 import { UserLoginInt, UserRegisterInt } from "../../utils/tsDefs";
 import { validRegister } from "../../utils/Validator";
@@ -24,7 +24,7 @@ export const login = (userLogin: UserLoginInt) => async (dispatch: Dispatch<Auth
     success: res.data.msg
    }
   });
-  console.log(res);
+  localStorage.setItem('logged', 'true');
  } catch (error: any) {
   dispatch({
    type: ALERT,
@@ -62,6 +62,51 @@ export const register = (userRegister: UserRegisterInt) => async (dispatch: Disp
    }
   });
   console.log(res);
+ } catch (error: any) {
+  dispatch({
+   type: ALERT,
+   payload: {
+    errors: error.response.data.msg
+   }
+  });
+ }
+}
+
+export const refreshToken = () => async (dispatch: Dispatch<AuthTypeInt | AlertTypeInt>) => {
+ const logged = localStorage.getItem('logged');
+ if (logged !== 'true') return;
+
+ try {
+  dispatch({
+   type: ALERT,
+   payload: {
+    loading: true
+   }
+  });
+  const res = await getAPI('refresh_token');
+  dispatch({
+   type: AUTH,
+   payload: res.data
+  });
+  dispatch({
+   type: ALERT,
+   payload: {}
+  });
+ } catch (error: any) {
+  dispatch({
+   type: ALERT,
+   payload: {
+    errors: error.response.data.msg
+   }
+  });
+ }
+}
+
+export const logout = () => async (dispatch: Dispatch<AuthTypeInt | AlertTypeInt>) => {
+ try {
+  localStorage.removeItem('logged');
+  await getAPI('logout');
+  window.location.href = '/';
  } catch (error: any) {
   dispatch({
    type: ALERT,
