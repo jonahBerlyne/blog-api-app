@@ -16,10 +16,7 @@ export const login = (userLogin: UserLoginInt) => async (dispatch: Dispatch<Auth
   const res = await postAPI('login', userLogin);
   dispatch({
    type: AUTH,
-   payload: {
-    token: res.data.access_token,
-    user: res.data.user
-   }
+   payload: res.data
   });
   dispatch({
    type: ALERT,

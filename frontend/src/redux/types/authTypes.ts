@@ -3,7 +3,8 @@ import { UserInt } from "../../utils/tsDefs";
 export const AUTH = 'AUTH';
 
 export interface AuthInt {
- token?: string,
+ access_token?: string,
+ msg?: string,
  user?: UserInt
 }
 

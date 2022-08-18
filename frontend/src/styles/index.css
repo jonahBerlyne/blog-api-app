@@ -14,5 +14,6 @@ code {
     monospace;
 }
 
+@import url('./alert.css');
 @import url('./auth.css');
 @import url('./loading.css');

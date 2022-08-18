@@ -23,9 +23,9 @@ export const register = async (req: Request, res: Response) => {
    password: hashedPassword
   };
 
-  const activeToken = generateActiveToken({ newUser });
+  const active_token = generateActiveToken({ newUser });
 
-  const url = `${process.env.BASE_URL}/active/${activeToken}`;
+  const url = `${process.env.BASE_URL}/active/${active_token}`;
 
   if (validEmail(account)) {
    sendEmail(account, url, "Verify your email address");
@@ -42,9 +42,9 @@ export const register = async (req: Request, res: Response) => {
 
 export const activateAccount = async (req: Request, res: Response) => {
  try {
-  const { activeToken } = req.body;
+  const { active_token } = req.body;
 
-  const decoded = <DecodedTokenInt>jwt.verify(activeToken, `${process.env.ACTIVE_SECRET_TOKEN}`);
+  const decoded = <DecodedTokenInt>jwt.verify(active_token, `${process.env.ACTIVE_SECRET_TOKEN}`);
 
   const { newUser } = decoded; // destructured directly from the interface
 
