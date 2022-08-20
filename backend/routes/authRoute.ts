@@ -2,6 +2,8 @@ import express from "express";
 
 import {
  activateAccount,
+ facebookLogin,
+ googleLogin,
  login,
  logout,
  refreshToken,
@@ -16,5 +18,7 @@ router.post("/activate", activateAccount);
 router.post("/login", login);
 router.get("/logout", logout);
 router.get("/refresh_token", refreshToken);
+router.post("/google_login", googleLogin);
+router.post("/facebook_login", facebookLogin);
 
 export default router;
