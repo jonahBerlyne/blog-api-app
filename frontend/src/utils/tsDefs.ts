@@ -32,6 +32,10 @@ export interface UserInt extends UserLoginInt {
  _id: string;
 }
 
+export interface UserProfileInt extends UserRegisterInt {
+ avatar: any;
+}
+
 export interface AlertInt {
  loading?: boolean;
  success?: string | string[],
