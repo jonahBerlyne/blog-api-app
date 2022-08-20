@@ -16,7 +16,7 @@ const Menu = () => {
    },
   ];
 
-  const otherLinks = [
+  const appLinks = [
    {
     name: "Home",
     path: "/"
@@ -29,7 +29,7 @@ const Menu = () => {
 
   const { auth } = useAppSelector((state: RootStore) => state);
 
-  const navLinks = auth.access_token ? otherLinks : authLinks;
+  const navLinks = auth.access_token ? appLinks : authLinks;
 
   const { pathname } = useLocation();
 
