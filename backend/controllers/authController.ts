@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { generateActiveToken, generateAccessToken, generateRefreshToken } from "../config/generateToken";
 import sendEmail from "../config/sendMail";
-import { sendSMS } from "../config/sendSMS";
+import { sendSMS, smsOTP, smsVerify } from "../config/sendSMS";
 import { validPhone, validEmail } from "../middleware/validator";
 import { UserInt, DecodedTokenInt, GooglePayloadInt, UserParamsInt } from "../config/interface";
 import { OAuth2Client } from 'google-auth-library';
@@ -293,5 +293,86 @@ export const facebookLogin = async (req: Request, res: Response) => {
 
  } catch (error: any) {
   res.status(500).json({ msg: error.message });
+ }
+}
+
+export const loginSMS = async (req: Request, res: Response) => {
+ try {
+  const { phone } = req.body;
+  const data = await smsOTP(phone, 'sms');
+  res.json(data);
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
+ }
+}
+
+export const verifySMS = async (req: Request, res: Response) => {
+ try {
+  const { phone, code } = req.body;
+  const data = await smsVerify(phone, code);
+
+  if (!data?.valid) return res.status(400).json({ msg: 'Invalid Authentication' });
+
+  const password = phone + 'your phone secret password';
+
+  const hashedPassword = await bcrypt.hash(password, 15);
+
+  const user = await userModel.findOne({ account: phone });
+
+  if (user) {
+   const match = await bcrypt.compare(password, user.password);
+  
+   if (!match) {
+    let msgErr = user.type === 'register' ? "Incorrect password" : `Incorrect password. The account login is ${user.type}`
+    return res.status(400).json({ msg: msgErr });
+   }
+   
+   const access_token = generateAccessToken({ id: user._id });
+   const refresh_token = generateRefreshToken({ id: user._id }, res);
+   
+   await userModel.findOneAndUpdate({ _id: user._id }, {
+    rf_token: refresh_token
+   });
+   
+   res.json({ 
+    msg: "Login successful",
+    access_token,
+    user: {
+     ...user._doc,
+     password: ''
+    } 
+   });
+
+  } else {
+   const user = {
+    name: phone,
+    account: phone,
+    password: hashedPassword,
+    type: 'sms'
+   };
+
+   const newUser = new userModel(user);
+   
+   const access_token = generateAccessToken({ id: newUser._id });
+   const refresh_token = generateRefreshToken({ id: newUser._id }, res);
+   
+   await userModel.findOneAndUpdate({ _id: newUser._id }, {
+    rf_token: refresh_token
+   });
+   
+   await newUser.save();
+   
+   res.json({ 
+    msg: "Login successful",
+    access_token,
+    user: {
+     ...newUser._doc,
+     password: ''
+    } 
+   });
+  }
+  
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
  }
 }

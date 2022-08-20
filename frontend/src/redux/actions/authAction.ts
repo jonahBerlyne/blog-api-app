@@ -3,7 +3,7 @@ import { AUTH, AuthTypeInt } from "../types/authTypes";
 import { postAPI, getAPI } from "../../utils/FetchData";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
 import { UserLoginInt, UserRegisterInt } from "../../utils/tsDefs";
-import { validRegister } from "../../utils/Validator";
+import { validRegister, validPhone } from "../../utils/Validator";
 
 export const login = (userLogin: UserLoginInt) => async (dispatch: Dispatch<AuthTypeInt | AlertTypeInt>) => {
  try {
@@ -182,4 +182,79 @@ export const facebookLogin = (accessToken: string, userID: string) => async (dis
    }
   });
  }
+}
+
+export const loginSMS = (phone: string) => async (dispatch: Dispatch<AuthTypeInt | AlertTypeInt>) => {
+ const check = validPhone(phone);
+ if (!check) {
+  return dispatch({
+   type: ALERT,
+   payload: { errors: 'Phone number format is incorrect' }
+  });
+ }
+
+ try {
+  dispatch({
+   type: ALERT,
+   payload: {
+    loading: true
+   }
+  });
+  
+  const res = await postAPI('login_sms', { phone });
+
+  if (!res.data.valid) {
+   verifySMS(phone, dispatch);
+  }
+
+ } catch (error: any) {
+  dispatch({
+   type: ALERT,
+   payload: {
+    errors: error.response.data.msg
+   }
+  });
+ }
+}
+
+export const verifySMS = async (phone: string, dispatch: Dispatch<AuthTypeInt | AlertTypeInt>) => {
+  const code = prompt('Enter your SMS code');
+  if (!code) return;
+
+  try {
+   dispatch({
+    type: ALERT,
+    payload: {
+     loading: true
+    }
+   });
+   
+   const res = await postAPI('verify_sms', { phone, code });
+   
+   dispatch({
+    type: AUTH,
+    payload: res.data
+   });
+ 
+   dispatch({
+    type: ALERT,
+    payload: {
+     success: res.data.msg
+    }
+   });
+ 
+   localStorage.setItem('logged', 'true');
+   
+  } catch (error: any) {
+   dispatch({
+    type: ALERT,
+    payload: {
+     errors: error.response.data.msg
+    }
+   });
+   setTimeout(() => {
+    verifySMS(phone, dispatch);
+   }, 100);
+  }
+
 }
