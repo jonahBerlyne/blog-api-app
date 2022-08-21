@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CardHoriz from '../components/cards/CardHoriz';
 import CreateForm from '../components/cards/CreateForm';
+import Quill from '../components/editor/ReactQuill';
 import NotFound from '../components/global/NotFound';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { BlogInt, RootStore } from '../utils/tsDefs';
@@ -17,6 +18,7 @@ const CreateBlog = () => {
   };
 
   const [blog, setBlog] = useState<BlogInt>(initialState);
+  const [body, setBody] = useState<string>('');
 
   const { auth, categories } = useAppSelector((state: RootStore) => state);
   const dispatch = useAppDispatch();
@@ -35,6 +37,12 @@ const CreateBlog = () => {
        <CardHoriz blog={blog} />
       </div>
      </div>
+
+     <Quill setBody={setBody} />
+
+     <button className='btn btn-dark mt-3 d-block mx-auto'>
+      Create Post
+     </button>
     </div>
   );
 }
