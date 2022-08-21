@@ -12,9 +12,9 @@ export const validRegister = (userRegister: UserRegisterInt) => {
  if (!account) errors.push("Please add your email or phone number");
  else if (!validPhone(account) && !validEmail(account)) errors.push("Please enter a valid email or phone number");
 
- if (password.length < 5) errors.push("Password must be at least 5 characters");
+ const msg = checkPassword(password, confirmPassword);
 
- if (password !== confirmPassword) errors.push("Password fields do not match");
+ if (msg) errors.push(msg);
 
  return {
   errMsg: errors,
@@ -30,4 +30,10 @@ export function validPhone(phone: string) {
 export function validEmail(email: string) {
   const regExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return regExp.test(String(email).toLowerCase());
+}
+
+export const checkPassword = (password: string, confirmPassword: string) => {
+ if (password.length < 5) return ("Password must be at least 5 characters");
+
+ if (password !== confirmPassword) return ("Password fields do not match");
 }

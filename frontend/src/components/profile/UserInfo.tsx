@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { updateUser } from '../../redux/actions/profileActions';
+import { resetPassword, updateUser } from '../../redux/actions/profileActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { FormSubmit, InputChange, RootStore, UserProfileInt } from '../../utils/tsDefs';
 import NotFound from '../global/NotFound';
@@ -46,6 +46,9 @@ const UserInfo = () => {
     if (avatar || name) {
       dispatch(updateUser((avatar as File), name, auth));
     }
+    if (password && auth.access_token) {
+      dispatch(resetPassword(password, confirmPassword, auth.access_token));
+    }
   }
 
   const { name, avatar, password, confirmPassword } = user;
@@ -74,10 +77,17 @@ const UserInfo = () => {
       <input type="text" className='form-control' id="account" name="account" defaultValue={auth.user.account} onChange={handleChange} disabled={true} />
      </div>
 
+     {
+      auth.user.type !== 'register' &&
+      <small className="text-danger">
+        Quick login with {auth.user.type} can't use this function
+      </small>
+     }
+
      <div className="form-group my-3">
       <label htmlFor="password">Password</label>
       <div className="password">
-       <input type={showPassword ? 'text' : 'password'} className='form-control' id="password" name="password" value={password} onChange={handleChange} />
+       <input type={showPassword ? 'text' : 'password'} className='form-control' id="password" name="password" value={password} onChange={handleChange} disabled={auth.user.type !== 'register'} />
 
        <small onClick={() => setShowPassword(!showPassword)}>
         { showPassword ? 'Hide' : 'Show'}
@@ -88,7 +98,7 @@ const UserInfo = () => {
      <div className="form-group my-3">
       <label htmlFor="confirmPassword">Confirm Password</label>
       <div className="password">
-       <input type={showConfirmPassword ? 'text' : 'password'} className='form-control' id="password" name="password" value={confirmPassword} onChange={handleChange} />
+       <input type={showConfirmPassword ? 'text' : 'password'} className='form-control' id="password" name="password" value={confirmPassword} onChange={handleChange} disabled={auth.user.type !== 'register'} />
 
        <small onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
         { showConfirmPassword ? 'Hide' : 'Show'}

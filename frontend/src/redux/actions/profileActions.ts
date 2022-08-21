@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import { patchAPI } from "../../utils/FetchData";
 import { checkImg, uploadImg } from "../../utils/UploadImg";
+import { checkPassword } from "../../utils/Validator";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
 import { AUTH, AuthInt, AuthTypeInt } from "../types/authTypes";
 
@@ -48,6 +49,42 @@ export const updateUser = (avatar: File, name: string, auth: AuthInt) => async (
     avatar: url ? url : auth.user.avatar, 
     name: url ? url : auth.user.avatar 
   }, auth.access_token);
+
+  dispatch({
+   type: ALERT,
+   payload: {
+    success: res.data.msg
+   }
+  });
+ } catch (error: any) {
+  dispatch({
+   type: ALERT,
+   payload: {
+    errors: error.response.data.msg
+   }
+  });
+ }
+}
+
+export const resetPassword = (password: string, confirmPassword: string, token: string) => async (dispatch: Dispatch<AlertTypeInt | AuthTypeInt>) => {
+ const msg = checkPassword(password, confirmPassword);
+
+ if (msg) return dispatch({
+  type: ALERT,
+  payload: {
+   errors: msg
+  }
+ });
+ 
+ try {
+  dispatch({
+   type: ALERT,
+   payload: {
+    loading: true
+   }
+  });
+
+  const res = await patchAPI('reset_password', { password }, token);
 
   dispatch({
    type: ALERT,
