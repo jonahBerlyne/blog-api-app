@@ -8,7 +8,7 @@ const Category = new Schema({
   trim: true,
   unique: true,
   minLength: 1,
-  maxLength: [50, "Category can only be 50 characters max."]
+  maxLength: [50, "Category can only be 50 characters max"]
  }
 }, { timestamps: true });
 
