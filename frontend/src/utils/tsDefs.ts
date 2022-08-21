@@ -41,3 +41,10 @@ export interface AlertInt {
  success?: string | string[],
  errors?: string | string[]
 }
+
+export interface CategoryInt {
+ name: string;
+ createdAt: string;
+ updatedAt: string;
+ _id: string;
+}

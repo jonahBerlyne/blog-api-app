@@ -24,5 +24,6 @@ code {
 
 @import url('./alert.css');
 @import url('./auth.css');
+@import url('./category.css');
 @import url('./loading.css');
 @import url('./profile.css');
