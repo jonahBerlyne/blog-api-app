@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { updateUser } from '../../redux/actions/profileActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { InputChange, RootStore, UserProfileInt } from '../../utils/tsDefs';
+import { FormSubmit, InputChange, RootStore, UserProfileInt } from '../../utils/tsDefs';
 import NotFound from '../global/NotFound';
 
 const UserInfo = () => {
@@ -40,12 +41,19 @@ const UserInfo = () => {
    }
   }
 
+  const handleSubmit = (e: FormSubmit) => {
+    e.preventDefault();
+    if (avatar || name) {
+      dispatch(updateUser((avatar as File), name, auth));
+    }
+  }
+
   const { name, avatar, password, confirmPassword } = user;
 
   if (!auth.user) return <NotFound />;
 
   return (
-    <form className='profile_info'>
+    <form className='profile_info' onSubmit={handleSubmit}>
      <div className="info_avatar">
       <img src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar} alt="Avatar" />
 
