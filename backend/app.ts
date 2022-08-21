@@ -8,7 +8,8 @@ import path from 'path';
 import cors from 'cors';
 import mongoose from 'mongoose';
 
-import authRoute from "./routes/authRoute";
+import authRoute from "./routes/authRoutes";
+import userRoute from "./routes/userRoutes";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/api", authRoute);
+app.use("/api", userRoute);
 
 const PORT = process.env.PORT || 5000;
 
