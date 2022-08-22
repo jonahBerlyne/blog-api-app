@@ -6,7 +6,7 @@ export interface HomeBlogsInt {
  _id: string;
  name: string;
  count: number;
- blogs: BlogInt;
+ blogs: BlogInt[];
 }
 
 export interface GetHomeBlogsTypeInt {

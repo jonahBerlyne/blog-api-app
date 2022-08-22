@@ -43,7 +43,7 @@ export const updateCategory = async (req: ReqAuthInt, res: Response) => {
  try {
   await categoryModel.findOneAndUpdate({ 
    _id: req.params.id
-  }, { name: req.body.name });
+  }, { name: (req.body.name).toLowerCase() });
 
   res.json({ msg: "Update successful" });
  } catch (error: any) {
