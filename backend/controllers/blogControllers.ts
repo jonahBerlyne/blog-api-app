@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import blogModel from "../models/blogModel";
 import { ReqAuthInt } from "../config/interface";
+import mongoose from "mongoose";
 
 export const createBlog = async (req: ReqAuthInt, res: Response) => {
  if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
@@ -79,4 +80,84 @@ export const getHomeBlogs = async (req: Request, res: Response) => {
  } catch (error: any) {
   return res.status(500).json({ msg: error.message });
  }
+}
+
+export const getBlogsByCategory = async (req: Request, res: Response) => {
+ const { limit, skip } = Pagination(req);
+ 
+ try {
+  const Data = await blogModel.aggregate([
+   {
+    $facet: {
+     totalData: [
+      { 
+       $match: { 
+        category: new mongoose.Types.ObjectId(req.params.id) 
+       } 
+      },
+      // user
+      {
+       $lookup: {
+        from: "users",
+        let: { user_id: "$user" },
+        pipeline: [
+         { $match: { $expr: { $eq: ["$_id", "$$user_id"] } }},
+         { $project: { password: 0 } }
+        ],
+        as: "user"
+       }
+      },
+      // array -> object
+      { $unwind: "$user" },
+      // Sorting
+      { $sort: { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: limit }
+     ],
+     totalCount: [
+      { 
+       $match: { 
+        category: new mongoose.Types.ObjectId(req.params.category_id) 
+       } 
+      },
+      { $count: 'count' }
+     ]
+    }
+   },
+   {
+    $project: {
+     count: { $arrayElemAt: ["$totalCount.count", 0] },
+     totalData: 1
+    }
+   }
+  ]);
+
+  const blogs = Data[0].totalData;
+  const count = Data[0].count;
+
+  // Pagination
+  let total = 0;
+
+  if (count % limit === 0) {
+   total = count / limit;
+  } else {
+   total = Math.floor(count / limit) + 1;
+  }
+
+  res.json({ blogs, total });
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
+ }
+}
+
+const Pagination = (req: ReqAuthInt) => {
+ let page = Number(req.query.page) * 1 || 1;
+ let limit = Number(req.query.limit) * 1 || 4;
+ let skip = (page - 1) * limit;
+
+ return {
+  page,
+  limit,
+  skip
+ };
 }

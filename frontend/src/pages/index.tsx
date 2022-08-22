@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CardVert from '../components/cards/CardVert';
+import Loading from '../components/global/Loading';
 import { useAppSelector } from '../redux/hooks';
 import { RootStore } from '../utils/tsDefs';
 
 const Home = () => {
   const { homeBlogs } = useAppSelector((state: RootStore) => state);
+
+  if (homeBlogs.length === 0) return <Loading />;
 
   return (
     <div className='home_page'>
