@@ -37,3 +37,12 @@ export const resetPassword = async (req: ReqAuthInt, res: Response) => {
   return res.status(500).json({ msg: error.message });
  }
 }
+
+export const getUser = async (req: Request, res: Response) => {
+ try {
+  const user = await userModel.findById(req.params.id).select('-password')
+  res.json(user);
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
+ }
+}

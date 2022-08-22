@@ -1,9 +1,10 @@
 import { Dispatch } from "redux";
-import { patchAPI } from "../../utils/FetchData";
+import { getAPI, patchAPI } from "../../utils/FetchData";
 import { checkImg, uploadImg } from "../../utils/UploadImg";
 import { checkPassword } from "../../utils/Validator";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
 import { AUTH, AuthInt, AuthTypeInt } from "../types/authTypes";
+import { GetOtherInfoTypeInt, GET_OTHER_INFO } from "../types/profileTypes";
 
 export const updateUser = (avatar: File, name: string, auth: AuthInt) => async (dispatch: Dispatch<AlertTypeInt | AuthTypeInt>) => {
  if (!auth.access_token || !auth.user) return;
@@ -100,4 +101,36 @@ export const resetPassword = (password: string, confirmPassword: string, token: 
    }
   });
  }
+}
+
+export const getOtherInfo = (id: string) => async (dispatch: Dispatch<AlertTypeInt | GetOtherInfoTypeInt>) => {
+  try {
+    dispatch({
+      type: ALERT,
+      payload: {
+        loading: true
+      }
+    });
+
+    const res = await getAPI(`user/${id}`);
+
+    dispatch({
+      type: GET_OTHER_INFO,
+      payload: res.data
+    });
+
+    dispatch({
+      type: ALERT,
+      payload: {
+        loading: false
+      }
+    });
+  } catch (error: any) {
+    dispatch({
+      type: ALERT,
+      payload: {
+        errors: error.response.data.msg
+      }
+    });
+  }
 }
