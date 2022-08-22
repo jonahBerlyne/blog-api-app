@@ -3,7 +3,7 @@ import { getAPI, postAPI } from "../../utils/FetchData";
 import { BlogInt } from "../../utils/tsDefs";
 import { uploadImg } from "../../utils/UploadImg";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
-import { GetBlogsCategoryTypeInt, GetHomeBlogsTypeInt, GET_BLOGS_BY_CATEGORY_ID, GET_HOME_BLOGS } from "../types/blogTypes";
+import { GetBlogsCategoryTypeInt, GetHomeBlogsTypeInt, GET_BLOGS_BY_CATEGORY_ID, GET_HOME_BLOGS, GET_BLOGS_BY_USER_ID, GetBlogsUserTypeInt } from "../types/blogTypes";
 
 export const createBlog = (blog: BlogInt, token: string) => async (dispatch: Dispatch<AlertTypeInt>) => {
  let url = '';
@@ -90,10 +90,49 @@ export const getBlogsByCategoryID = (id: string, search: string) => async (dispa
    }
   });
 
-  const res = await getAPI(`blogs/${id}${value}&limit=${limit}`);
+  const res = await getAPI(`blogs/category/${id}${value}&limit=${limit}`);
 
   dispatch({
    type: GET_BLOGS_BY_CATEGORY_ID,
+   payload: {
+    ...res.data, 
+    id,
+    search
+   }
+  });
+
+  dispatch({
+   type: ALERT,
+   payload: {
+    loading: false
+   }
+  });
+ } catch (error: any) {
+  dispatch({
+   type: ALERT,
+   payload: {
+    errors: error.response.data.msg
+   }
+  });
+ }
+}
+
+export const getBlogsByUserID = (id: string, search: string) => async (dispatch: Dispatch<AlertTypeInt | GetBlogsUserTypeInt>) => {
+ try {
+  let limit = 3;
+  let value = search ? search : '?page=1';
+
+  dispatch({
+   type: ALERT,
+   payload: {
+    loading: true
+   }
+  });
+
+  const res = await getAPI(`blogs/user/${id}${value}&limit=${limit}`);
+
+  dispatch({
+   type: GET_BLOGS_BY_USER_ID,
    payload: {
     ...res.data, 
     id,
