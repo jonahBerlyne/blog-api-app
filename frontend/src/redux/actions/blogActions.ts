@@ -78,8 +78,11 @@ export const getHomeBlogs = () => async (dispatch: Dispatch<AlertTypeInt | GetHo
  }
 }
 
-export const getBlogsByCategoryID = (id: string) => async (dispatch: Dispatch<AlertTypeInt | GetBlogsCategoryTypeInt>) => {
+export const getBlogsByCategoryID = (id: string, search: string) => async (dispatch: Dispatch<AlertTypeInt | GetBlogsCategoryTypeInt>) => {
  try {
+  let limit = 8;
+  let value = search ? search : '?page=1';
+
   dispatch({
    type: ALERT,
    payload: {
@@ -87,13 +90,14 @@ export const getBlogsByCategoryID = (id: string) => async (dispatch: Dispatch<Al
    }
   });
 
-  const res = await getAPI(`blogs/${id}`);
+  const res = await getAPI(`blogs/${id}${value}&limit=${limit}`);
 
   dispatch({
    type: GET_BLOGS_BY_CATEGORY_ID,
    payload: {
     ...res.data, 
-    id
+    id,
+    search
    }
   });
 

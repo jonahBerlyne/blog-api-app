@@ -19,6 +19,7 @@ export interface BlogsCategoryInt {
  id: string;
  blogs: BlogInt[];
  total: number;
+ search: string;
 }
 
 export interface GetBlogsCategoryTypeInt {

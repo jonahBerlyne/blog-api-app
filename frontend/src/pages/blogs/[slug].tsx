@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import CardVert from '../../components/cards/CardVert';
+import Loading from '../../components/global/Loading';
 import NotFound from '../../components/global/NotFound';
+import Pagination from '../../components/global/Pagination';
 import { getBlogsByCategoryID } from '../../redux/actions/blogActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { BlogInt, ParamsInt, RootStore } from '../../utils/tsDefs';
@@ -20,21 +22,32 @@ const BlogsByCategory = () => {
    const category = categories.find(item => item.name === slug);
    if (category) setCategoryID(category._id);
   }, [slug, categories]);
+  
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { search } = location;
 
   useEffect(() => {
-   if (!categoryID) return;
+    if (!categoryID) return;
 
    if (blogsCategory.every(item => item.id !== categoryID)) {
-    dispatch(getBlogsByCategoryID(categoryID));
+    dispatch(getBlogsByCategoryID(categoryID, search));
    } else {
     const data = blogsCategory.find(item => item.id === categoryID);
     if (!data) return;
     setBlogs(data.blogs);
     setTotal(data.total);
+    if (data.search) navigate(data.search);
    }
-  }, [categoryID, blogsCategory, dispatch]);
+  }, [categoryID, blogsCategory, dispatch, search]);
 
-  if (!blogs) return <NotFound />;
+
+  const handlePagination = (num: number) => {
+    const search = `?page=${num}`;
+    dispatch(getBlogsByCategoryID(categoryID, search));
+  }
+
+  if (!blogs) return <Loading />;
 
   return (
     <div className="blogs_category">
@@ -45,6 +58,13 @@ const BlogsByCategory = () => {
        ))
       }
      </div>
+     {
+      total > 1 &&
+      <Pagination 
+        total={total}
+        callback={handlePagination}
+      />
+     }
     </div>
   );
 }
