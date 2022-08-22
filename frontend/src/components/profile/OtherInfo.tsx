@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getOtherInfo } from '../../redux/actions/profileActions';
+import { getOtherInfo } from '../../redux/actions/userActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { RootStore, UserInt } from '../../utils/tsDefs';
 import Loading from '../global/Loading';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { resetPassword, updateUser } from '../../redux/actions/profileActions';
+import { resetPassword, updateUser } from '../../redux/actions/userActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { FormSubmit, InputChange, RootStore, UserProfileInt } from '../../utils/tsDefs';
 import NotFound from '../global/NotFound';

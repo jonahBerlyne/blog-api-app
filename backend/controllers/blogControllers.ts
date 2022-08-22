@@ -218,6 +218,20 @@ export const getBlogsByUser = async (req: Request, res: Response) => {
  }
 }
 
+export const getBlog = async (req: Request, res: Response) => {
+ try {
+  const blog = await blogModel
+  .findOne({ _id: req.params.id })
+  .populate("user", "-password");
+
+  if (!blog) return res.status(400).json({ msg: "Blog doesn't exist" });
+
+  res.json(blog);
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
+ }
+}
+
 const Pagination = (req: ReqAuthInt) => {
  let page = Number(req.query.page) * 1 || 1;
  let limit = Number(req.query.limit) * 1 || 4;
