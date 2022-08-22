@@ -9,6 +9,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 
 import authRoute from "./routes/authRoutes";
+import blogRoute from "./routes/blogRoutes";
 import categoryRoute from "./routes/categoryRoutes";
 import userRoute from "./routes/userRoutes";
 
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/api", authRoute);
+app.use("/api", blogRoute);
 app.use("/api", categoryRoute);
 app.use("/api", userRoute);
 

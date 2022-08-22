@@ -13,10 +13,17 @@ const Blog = new Schema({
   maxLength: 50,
   trim: true
  },
- text: {
+ content: {
   type: String,
   required: true,
-  minLength: 1000
+  minLength: 2000
+ },
+ description: {
+  type: String,
+  required: true,
+  trim: true,
+  minLength: 50,
+  maxLength: 200
  },
  thumbnail: {
   type: String,

@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import { postAPI } from "../../utils/FetchData";
 import { BlogInt } from "../../utils/tsDefs";
 import { uploadImg } from "../../utils/UploadImg";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
@@ -25,6 +26,8 @@ export const createBlog = (blog: BlogInt, token: string) => async (dispatch: Dis
    ...blog,
    thumbnail: url
   };
+
+  await postAPI('blog', newBlog, token);
 
   dispatch({
    type: ALERT,
