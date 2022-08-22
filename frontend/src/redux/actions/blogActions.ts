@@ -3,7 +3,7 @@ import { getAPI, postAPI } from "../../utils/FetchData";
 import { BlogInt } from "../../utils/tsDefs";
 import { uploadImg } from "../../utils/UploadImg";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
-import { GetHomeBlogsTypeInt, GET_HOME_BLOGS } from "../types/blogTypes";
+import { GetBlogsCategoryTypeInt, GetHomeBlogsTypeInt, GET_BLOGS_BY_CATEGORY_ID, GET_HOME_BLOGS } from "../types/blogTypes";
 
 export const createBlog = (blog: BlogInt, token: string) => async (dispatch: Dispatch<AlertTypeInt>) => {
  let url = '';
@@ -60,6 +60,41 @@ export const getHomeBlogs = () => async (dispatch: Dispatch<AlertTypeInt | GetHo
   dispatch({
    type: GET_HOME_BLOGS,
    payload: res.data
+  });
+
+  dispatch({
+   type: ALERT,
+   payload: {
+    loading: false
+   }
+  });
+ } catch (error: any) {
+  dispatch({
+   type: ALERT,
+   payload: {
+    errors: error.response.data.msg
+   }
+  });
+ }
+}
+
+export const getBlogsByCategoryID = (id: string) => async (dispatch: Dispatch<AlertTypeInt | GetBlogsCategoryTypeInt>) => {
+ try {
+  dispatch({
+   type: ALERT,
+   payload: {
+    loading: true
+   }
+  });
+
+  const res = await getAPI(`blogs/${id}`);
+
+  dispatch({
+   type: GET_BLOGS_BY_CATEGORY_ID,
+   payload: {
+    ...res.data, 
+    id
+   }
   });
 
   dispatch({
