@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CardHoriz from '../components/cards/CardHoriz';
 import CreateForm from '../components/cards/CreateForm';
 import Quill from '../components/editor/ReactQuill';
 import NotFound from '../components/global/NotFound';
+import { createBlog } from '../redux/actions/blogActions';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { ALERT } from '../redux/types/alertTypes';
 import { BlogInt, RootStore } from '../utils/tsDefs';
+import { uploadImg } from '../utils/UploadImg';
+import { validCreateBlog } from '../utils/Validator';
 
 const CreateBlog = () => {
   const initialState = {
@@ -20,8 +24,43 @@ const CreateBlog = () => {
   const [blog, setBlog] = useState<BlogInt>(initialState);
   const [body, setBody] = useState<string>('');
 
-  const { auth, categories } = useAppSelector((state: RootStore) => state);
+  const divRef = useRef<HTMLDivElement>(null);
+  const [text, setText] = useState<string>('');
+
+  const { auth } = useAppSelector((state: RootStore) => state);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+   const div = divRef.current;
+   if (!div) return;
+   const text = (div?.innerText as string);
+   setText(text);
+  }, [body]);
+
+  const handleSubmit = async () => {
+    if (!auth.access_token) return;
+
+    const check = validCreateBlog({ 
+      ...blog,
+      content: text
+    });
+
+    if (check.errLength > 0) {
+      return dispatch({
+        type: ALERT,
+        payload: {
+          errors: check.errMsg
+        }
+      });
+    }
+
+    let newData = {
+      ...blog,
+      content: body
+    };
+
+    dispatch(createBlog(newData, auth.access_token));
+  }
 
   if (!auth.access_token) return <NotFound />;
   return (
@@ -40,7 +79,14 @@ const CreateBlog = () => {
 
      <Quill setBody={setBody} />
 
-     <button className='btn btn-dark mt-3 d-block mx-auto'>
+     <div ref={divRef} dangerouslySetInnerHTML={{
+      __html: body
+     }} style={{ display: 'none' }} />
+     <small>
+      {text.length}
+     </small>
+
+     <button className='btn btn-dark mt-3 d-block mx-auto' onClick={handleSubmit}>
       Create Post
      </button>
     </div>
