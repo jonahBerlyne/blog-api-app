@@ -38,7 +38,9 @@ export const getComments = async (req: Request, res: Response) => {
      totalData: [
       { 
        $match: {
-        blog_id: new mongoose.Types.ObjectId(req.params.id)
+        blog_id: new mongoose.Types.ObjectId(req.params.id),
+        comment_root: { $exists: false },
+        reply_user: { $exists: false }
        }
       },
       {
@@ -50,6 +52,34 @@ export const getComments = async (req: Request, res: Response) => {
        }
       },
       { $unwind: "$user" },
+      {
+       $lookup: {
+        "from": "comments",
+        "let": { cm_id: "$reply_comment" },
+        "pipeline": [
+         { $match: { $expr: { $in: ["$_id", "$$cm_id"] } } },
+          {
+           $lookup: {
+            "from": "users",
+            "localField": "user",
+            "foreignField": "_id",
+            "as": "user"
+           }
+          },
+          { $unwind: "$user" },
+          {
+           $lookup: {
+            "from": "users",
+            "localField": "reply_user",
+            "foreignField": "_id",
+            "as": "reply_user"
+           },
+          },
+          { $unwind: "$reply_user" },
+        ],
+        "as": "reply_comment"
+       }
+      },
       { $sort: { createdAt: -1 } },
       { $skip: skip },
       { $limit: limit }
@@ -57,7 +87,9 @@ export const getComments = async (req: Request, res: Response) => {
      totalCount: [
       {
        $match: {
-        blog_id: new mongoose.Types.ObjectId(req.params.id)
+        blog_id: new mongoose.Types.ObjectId(req.params.id),
+        comment_root: { $exists: false },
+        reply_user: { $exists: false }
        }
       },
       { $count: 'count' }
@@ -84,6 +116,39 @@ export const getComments = async (req: Request, res: Response) => {
   }
 
   res.json({ comments, total });
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
+ }
+}
+
+export const replyComment = async (req: ReqAuthInt, res: Response) => {
+ if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
+
+ try {
+  const {
+   content,
+   blog_id,
+   blog_user_id,
+   comment_root,
+   reply_user
+  } = req.body;
+
+  const newComment = new commentModel({
+   user: req.user._id,
+   content,
+   blog_id,
+   blog_user_id,
+   comment_root,
+   reply_user: reply_user._id
+  });
+
+  await commentModel.findOneAndUpdate({ _id: comment_root }, {
+   $push: { reply_comment: newComment._id }
+  });
+
+  await newComment.save();
+  
+  res.json(newComment);
  } catch (error: any) {
   return res.status(500).json({ msg: error.message });
  }

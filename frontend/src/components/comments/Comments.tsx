@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CommentInt } from '../../utils/tsDefs';
 import AvatarComment from './AvatarComment';
 import AvatarReply from './AvatarReply';
@@ -10,6 +10,11 @@ interface CommentsProp {
 
 const Comments: React.FC<CommentsProp> = ({ comment }) => {
   const [showReply, setShowReply] = useState<CommentInt[]>([]);
+
+  useEffect(() => {
+    if (!comment.reply_comment) return;
+    setShowReply(comment.reply_comment);
+  }, [comment.reply_comment]);
 
   return (
     <div className='my-3 d-flex' style={{
