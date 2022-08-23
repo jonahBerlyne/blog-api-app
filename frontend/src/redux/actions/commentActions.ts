@@ -1,18 +1,11 @@
 import { Dispatch } from "redux"
-import { postAPI } from "../../utils/FetchData"
+import { getAPI, postAPI } from "../../utils/FetchData"
 import { CommentInt } from "../../utils/tsDefs"
 import { ALERT, AlertTypeInt } from "../types/alertTypes"
-import { CreateCommentTypeInt, CREATE_COMMENT } from "../types/commentTypes"
+import { CreateCommentTypeInt, CREATE_COMMENT, GetCommentsTypeInt, GET_COMMENTS } from "../types/commentTypes"
 
 export const createComment = (data: CommentInt, token: string) => async (dispatch: Dispatch<AlertTypeInt | CreateCommentTypeInt>) => {
  try {
-  dispatch({
-   type: ALERT,
-   payload: {
-    loading: true
-   }
-  });
-
   const res = await postAPI('comment', data, token);
 
   dispatch({
@@ -22,11 +15,26 @@ export const createComment = (data: CommentInt, token: string) => async (dispatc
     user: data.user
    }
   });
-
+ } catch (error: any) {
   dispatch({
    type: ALERT,
    payload: {
-    loading: false
+    errors: error.response.data.msg
+   }
+  });
+ }
+}
+
+export const getComments = (id: string) => async (dispatch: Dispatch<AlertTypeInt | GetCommentsTypeInt>) => {
+ try {
+  let limit = 8;
+  const res = await getAPI(`comments/blog/${id}?limit=${limit}`);
+
+  dispatch({
+   type: GET_COMMENTS,
+   payload: {
+    data: res.data.comments,
+    total: res.data.total
    }
   });
  } catch (error: any) {
