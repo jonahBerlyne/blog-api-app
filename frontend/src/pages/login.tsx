@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import LoginPass from '../components/auth/LoginPass';
 import LoginSMS from '../components/auth/LoginSMS';
 import { useAppSelector } from '../redux/hooks';
@@ -9,13 +9,17 @@ import SocialLogin from '../components/auth/SocialLogin';
 const LoginPage = () => {
   const [sms, setSms] = useState<boolean>(false);
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   const { auth } = useAppSelector((state: RootStore) => state);
 
   useEffect(() => {
-    if (auth.access_token) navigate('/');
-  }, [auth.access_token, navigate]);
+    if (auth.access_token) {
+      let url = location.search.replace('?', '/');
+      return navigate(url);
+    }
+  }, [auth.access_token, navigate, location]);
 
   return (
     <div className="auth_page">
@@ -35,7 +39,7 @@ const LoginPage = () => {
         </small>
         <p>
           You don't have an account?
-          <Link to="/register" style={{ color: "crimson" }}>Click Here to Register</Link>
+          <Link to={`/register${location.search}`} style={{ color: "crimson" }}>Click Here to Register</Link>
         </p>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import RegisterForm from '../components/auth/RegisterForm';
 
 const RegisterPage = () => {
+  const location = useLocation();
 
   return (
     <div className="auth_page">
@@ -11,7 +12,7 @@ const RegisterPage = () => {
         <RegisterForm />
         <p className='mt-2'>
           Already have an account?
-          <Link to="/login" style={{ color: "crimson" }}>Click Here to Login</Link>
+          <Link to={`/login${location.search}`} style={{ color: "crimson" }}>Click Here to Login</Link>
         </p>
       </div>
     </div>

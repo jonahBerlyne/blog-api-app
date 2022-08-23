@@ -59,3 +59,14 @@ export interface BlogInt {
  category: string;
  createdAt: string;
 }
+
+export interface CommentInt {
+ _id?: string;
+ user: UserInt;
+ blog_id: string;
+ blog_user_id: string;
+ content: string;
+ reply_comment?: CommentInt[];
+ reply_user?: string;
+ createdAt: string;
+}

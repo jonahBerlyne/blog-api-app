@@ -26,6 +26,7 @@ code {
 @import url('./auth.css');
 @import url('./blogs_category.css');
 @import url('./category.css');
+@import url('./comments.css');
 @import url('./home.css');
 @import url('./loading.css');
 @import url('./profile.css');
