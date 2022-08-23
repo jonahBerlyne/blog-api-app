@@ -42,3 +42,14 @@ export interface UserParamsInt {
 export interface ReqAuthInt extends Request {
  user?: UserInt;
 }
+
+export interface CommentInt extends Document {
+ user: string;
+ blog_id: string;
+ blog_user_id: string;
+ content: string;
+ reply_comment: string[];
+ reply_user: string;
+ comment_root: string;
+ _doc: object;
+}

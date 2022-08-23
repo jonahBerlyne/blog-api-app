@@ -11,6 +11,7 @@ import mongoose from 'mongoose';
 import authRoute from "./routes/authRoutes";
 import blogRoute from "./routes/blogRoutes";
 import categoryRoute from "./routes/categoryRoutes";
+import commentRoute from "./routes/commentRoutes";
 import userRoute from "./routes/userRoutes";
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use("/api", authRoute);
 app.use("/api", blogRoute);
 app.use("/api", categoryRoute);
+app.use("/api", commentRoute);
 app.use("/api", userRoute);
 
 const PORT = process.env.PORT || 5000;

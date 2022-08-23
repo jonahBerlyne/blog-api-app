@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { CommentInt } from "../config/interface";
 const Schema = mongoose.Schema;
 
 const Comment = new Schema({
@@ -6,7 +7,7 @@ const Comment = new Schema({
   type: Schema.Types.ObjectId,
   ref: "User"
  },
- text: {
+ content: {
   type: String,
   required: true,
   minLength: 1,
@@ -28,4 +29,4 @@ const Comment = new Schema({
  }
 }, { timestamps: true });
 
-export default mongoose.model("Comment", Comment); 
+export default mongoose.model<CommentInt>("Comment", Comment); 
