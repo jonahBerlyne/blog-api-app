@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { createComment } from '../../redux/actions/commentActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { BlogInt, CommentInt, RootStore, UserInt } from '../../utils/tsDefs';
 import Comments from '../comments/Comments';
@@ -11,7 +12,7 @@ interface DisplayBlogInt {
 
 const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
 
-  const { auth } = useAppSelector((state: RootStore) => state);
+  const { auth, comments } = useAppSelector((state: RootStore) => state);
   const dispatch = useAppDispatch();
 
   const [showComments, setShowComments] = useState<CommentInt[]>([]);
@@ -28,7 +29,13 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
     };
 
     setShowComments([...showComments, data]);
+    dispatch(createComment(data, auth.access_token));
   }
+
+  useEffect(() => {
+    if (comments.data.length === 0) return;
+    setShowComments(comments.data);
+  }, [comments.data]);
 
   return (
     <div>
