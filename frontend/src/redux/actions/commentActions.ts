@@ -25,10 +25,10 @@ export const createComment = (data: CommentInt, token: string) => async (dispatc
  }
 }
 
-export const getComments = (id: string) => async (dispatch: Dispatch<AlertTypeInt | GetCommentsTypeInt>) => {
+export const getComments = (id: string, num: number) => async (dispatch: Dispatch<AlertTypeInt | GetCommentsTypeInt>) => {
  try {
-  let limit = 8;
-  const res = await getAPI(`comments/blog/${id}?limit=${limit}`);
+  let limit = 4;
+  const res = await getAPI(`comments/blog/${id}?page=${num}&limit=${limit}`);
 
   dispatch({
    type: GET_COMMENTS,

@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createComment, getComments } from '../../redux/actions/commentActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { BlogInt, CommentInt, RootStore, UserInt } from '../../utils/tsDefs';
 import Comments from '../comments/Comments';
 import Input from '../comments/Input';
 import Loading from '../global/Loading';
+import Pagination from '../global/Pagination';
 
 interface DisplayBlogInt {
  blog: BlogInt;
@@ -18,6 +19,9 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
 
   const [showComments, setShowComments] = useState<CommentInt[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleComment = (body: string) => {
     if (!auth.user || !auth.access_token) return;
@@ -38,16 +42,22 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
     setShowComments(comments.data);
   }, [comments.data]);
 
-  const fetchComments = useCallback(async (id: string) => {
+  const fetchComments = useCallback(async (id: string, num = 1) => {
     setLoading(true);
-    await dispatch(getComments(id));
+    await dispatch(getComments(id, num));
     setLoading(false);
   }, [dispatch]);
 
   useEffect(() => {
     if (!blog._id) return;
-    fetchComments(blog._id);
-  }, [blog._id, fetchComments]);
+    const num = parseInt(location.search.slice(6)) || 1;
+    fetchComments(blog._id, num);
+  }, [blog._id, fetchComments, location]);
+
+  const handlePagination = (num: number) => {
+    if (!blog._id) return;
+    fetchComments(blog._id, num);
+  }
 
   return (
     <div>
@@ -88,6 +98,15 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
         <Comments key={index} comment={comment} />
       ))
      }
+
+     {
+      comments.total > 1 &&
+      <Pagination 
+        total={comments.total}
+        callback={handlePagination}
+      />
+     }
+
 
     </div>
   );

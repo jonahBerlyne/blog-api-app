@@ -34,7 +34,7 @@ const CommentList: React.FC<CommentProps> = ({ comment, showReply, setShowReply 
       createdAt: new Date().toISOString()
     };
 
-    setShowReply([...showReply, data]);
+    setShowReply([data, ...showReply]);
     dispatch(replyComment(data, auth.access_token));
     setOnReply(false);
   }

@@ -46,8 +46,11 @@ export const getComments = async (req: Request, res: Response) => {
       {
        $lookup: {
         "from": "users",
-        "localField": "user",
-        "foreignField": "_id",
+        "let": {user_id: "$user"},
+        "pipeline": [
+          { $match: {$expr: {$eq: ["$_id", "$$user_id"]}} },
+          {$project: {name: 1, avatar: 1}}
+        ],
         "as": "user"
        }
       },
@@ -61,8 +64,11 @@ export const getComments = async (req: Request, res: Response) => {
           {
            $lookup: {
             "from": "users",
-            "localField": "user",
-            "foreignField": "_id",
+            "let": {user_id: "$user"},
+            "pipeline": [
+              { $match: {$expr: {$eq: ["$_id", "$$user_id"]}} },
+              {$project: {name: 1, avatar: 1}}
+            ],
             "as": "user"
            }
           },
@@ -70,8 +76,11 @@ export const getComments = async (req: Request, res: Response) => {
           {
            $lookup: {
             "from": "users",
-            "localField": "reply_user",
-            "foreignField": "_id",
+            "let": {user_id: "$reply_user"},
+            "pipeline": [
+              { $match: {$expr: {$eq: ["$_id", "$$user_id"]}} },
+              {$project: {name: 1, avatar: 1}}
+            ],
             "as": "reply_user"
            },
           },
