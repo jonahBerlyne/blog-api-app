@@ -3,6 +3,8 @@ import { CommentInt } from "../../utils/tsDefs";
 export const CREATE_COMMENT = "CREATE_COMMENT";
 export const GET_COMMENTS = "GET_COMMENTS";
 export const REPLY_COMMENT = "REPLY_COMMENT";
+export const UPDATE_COMMENT = "UPDATE_COMMENT";
+export const UPDATE_REPLY = "UPDATE_REPLY";
 
 export interface CommentStateInt {
  data: CommentInt[];
@@ -24,4 +26,9 @@ export interface ReplyCommentTypeInt {
  payload: CommentInt;
 }
 
-export type CommentType = CreateCommentTypeInt | GetCommentsTypeInt | ReplyCommentTypeInt;
+export interface UpdateTypeInt {
+ type: typeof UPDATE_COMMENT | typeof UPDATE_REPLY;
+ payload: CommentInt;
+}
+
+export type CommentType = CreateCommentTypeInt | GetCommentsTypeInt | ReplyCommentTypeInt | UpdateTypeInt;

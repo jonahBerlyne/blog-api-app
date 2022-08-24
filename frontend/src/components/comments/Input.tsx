@@ -1,19 +1,29 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { CommentInt } from '../../utils/tsDefs';
 import LiteQuill from '../editor/LiteQuill';
 
-interface InputProp {
+interface InputProps {
  callback: (body: string) => void;
+ edit?: CommentInt;
+ setEdit?: (edit?: CommentInt) => void;
 }
 
-const Input: React.FC<InputProp> = ({ callback }) => {
+const Input: React.FC<InputProps> = ({ callback, edit, setEdit }) => {
   const [body, setBody] = useState<string>('');
   const divRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (edit) setBody(edit.content);
+  }, [edit]);
 
   const handleSubmit = () => {
    const div = divRef.current;
    const text = (div?.innerText as string)
 
-   if (!text.trim()) return;
+   if (!text.trim()) {
+    if (setEdit) return setEdit(undefined);
+    return;
+   };
 
    callback(body);
    setBody('');
@@ -27,7 +37,7 @@ const Input: React.FC<InputProp> = ({ callback }) => {
       __html: body
      }} style={{ display: 'none' }} />
 
-     <button className='btn btn-dark ms-auto d-block px-4 mt-2' onClick={handleSubmit}>Send</button>
+     <button className='btn btn-dark ms-auto d-block px-4 mt-2' onClick={handleSubmit}>{edit ? 'Update' : 'Send'}</button>
     </div>
   );
 }

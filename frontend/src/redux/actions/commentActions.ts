@@ -1,8 +1,8 @@
 import { Dispatch } from "redux"
-import { getAPI, postAPI } from "../../utils/FetchData"
+import { getAPI, patchAPI, postAPI } from "../../utils/FetchData"
 import { CommentInt } from "../../utils/tsDefs"
 import { ALERT, AlertTypeInt } from "../types/alertTypes"
-import { CreateCommentTypeInt, CREATE_COMMENT, GetCommentsTypeInt, GET_COMMENTS, ReplyCommentTypeInt, REPLY_COMMENT } from "../types/commentTypes"
+import { CreateCommentTypeInt, CREATE_COMMENT, GetCommentsTypeInt, GET_COMMENTS, ReplyCommentTypeInt, REPLY_COMMENT, UpdateTypeInt, UPDATE_COMMENT, UPDATE_REPLY } from "../types/commentTypes"
 
 export const createComment = (data: CommentInt, token: string) => async (dispatch: Dispatch<AlertTypeInt | CreateCommentTypeInt>) => {
  try {
@@ -58,6 +58,24 @@ export const replyComment = (data: CommentInt, token: string) => async (dispatch
     user: data.user,
     reply_user: data.reply_user
    }
+  });
+ } catch (error: any) {
+  dispatch({
+   type: ALERT,
+   payload: {
+    errors: error.response.data.msg
+   }
+  });
+ }
+}
+
+export const updateComment = (data: CommentInt, token: string) => async (dispatch: Dispatch<AlertTypeInt | UpdateTypeInt>) => {
+ try {
+  // const res = await patchAPI('comment', data, token);
+
+  dispatch({
+   type: data.comment_root ? UPDATE_REPLY : UPDATE_COMMENT,
+   payload: data
   });
  } catch (error: any) {
   dispatch({
