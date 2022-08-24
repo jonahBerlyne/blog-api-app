@@ -163,6 +163,55 @@ export const replyComment = async (req: ReqAuthInt, res: Response) => {
  }
 }
 
+export const updateComment = async (req: ReqAuthInt, res: Response) => {
+ if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
+
+ try {
+  const { content } = req.body;
+
+  const comment = await commentModel.findOneAndUpdate({
+    _id: req.params.id,
+    user: req.user.id
+  }, { content });
+
+  if (!comment) return res.status(400).json({ msg: "Comment doesn't exist" });
+  
+  res.json({ msg: "Update Successful" });
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
+ }
+}
+
+export const deleteComment = async (req: ReqAuthInt, res: Response) => {
+ if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
+
+ try {
+  const comment = await commentModel.findOneAndDelete({
+    _id: req.params.id,
+    $or: [
+      { user: req.user._id },
+      { blog_user_id: req.user._id }
+    ]
+  });
+
+  if (!comment) return res.status(400).json({ msg: "Comment doesn't exist" });
+
+  if (comment.comment_root) {
+    // update reply comment
+    await commentModel.findOneAndUpdate({_id: comment.comment_root}, {
+      $pull: { reply_comment: comment._id }
+    });
+  } else {
+    // delete all comments in reply comment
+    await commentModel.deleteMany({_id: {$in: comment.reply_comment}});
+  }
+  
+  res.json({ msg: "Comment deleted" });
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
+ }
+}
+
 const Pagination = (req: ReqAuthInt) => {
  let page = Number(req.query.page) * 1 || 1;
  let limit = Number(req.query.limit) * 1 || 4;

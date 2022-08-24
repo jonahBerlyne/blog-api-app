@@ -1,4 +1,4 @@
-import { CommentStateInt, CommentType, CREATE_COMMENT, GET_COMMENTS, REPLY_COMMENT, UPDATE_COMMENT, UPDATE_REPLY } from "../types/commentTypes";
+import { CommentStateInt, CommentType, CREATE_COMMENT, DELETE_COMMENT, DELETE_REPLY, GET_COMMENTS, REPLY_COMMENT, UPDATE_COMMENT, UPDATE_REPLY } from "../types/commentTypes";
 
 const initialState = {
  data: [],
@@ -48,6 +48,25 @@ const commentReducer = (state: CommentStateInt = initialState, action: CommentTy
             reply._id === action.payload._id ?
             action.payload :
             reply 
+          ))
+        } :
+        item
+      ))
+    }
+  case DELETE_COMMENT:
+    return {
+      ...state,
+      data: state.data.filter(item => item._id !== action.payload._id)
+    }
+  case DELETE_REPLY:
+    return {
+      ...state,
+      data: state.data.map(item => (
+        item._id === action.payload.comment_root ?
+        {
+          ...item,
+          reply_comment: item.reply_comment?.filter(reply => (
+            reply._id !== action.payload._id
           ))
         } :
         item
