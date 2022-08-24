@@ -3,8 +3,9 @@ import { useParams } from 'react-router-dom';
 import { showErrMsg } from '../../components/alert/Alert';
 import DisplayBlog from '../../components/blog/DisplayBlog';
 import Loading from '../../components/global/Loading';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { getAPI } from '../../utils/FetchData';
-import { BlogInt, ParamsInt } from '../../utils/tsDefs';
+import { BlogInt, ParamsInt, RootStore } from '../../utils/tsDefs';
 
 const BlogDetail = () => {
   const { slug: id }: ParamsInt = useParams();
@@ -12,6 +13,9 @@ const BlogDetail = () => {
   const [blog, setBlog] = useState<BlogInt>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+
+  const { socket } = useAppSelector((state: RootStore) => state);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
    if (!id) return;
@@ -31,6 +35,15 @@ const BlogDetail = () => {
     setBlog(undefined);
    }
   }, [id]);
+
+  useEffect(() => {
+    if (!id || !socket) return;
+    socket.emit('joinRoom', id);
+
+    return () => {
+      socket.emit('outRoom', id);
+    }
+  }, [socket, id]);
 
   if (loading) return <Loading />;
 

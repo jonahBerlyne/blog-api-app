@@ -9,6 +9,9 @@ import { useAppDispatch } from './redux/hooks';
 import { getCategories } from './redux/actions/categoryActions';
 import { getHomeBlogs } from './redux/actions/blogActions';
 
+import io from 'socket.io-client';
+import { SOCKET } from './redux/types/socketTypes';
+
 const App = () => {
   const dispatch = useAppDispatch();
 
@@ -16,6 +19,18 @@ const App = () => {
     dispatch(getHomeBlogs());
     dispatch(getCategories());
     dispatch(refreshToken());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const socket = io();
+    dispatch({
+      type: SOCKET,
+      payload: socket
+    });
+
+    return () => {
+      socket.close();
+    }
   }, [dispatch]);
   
   return (

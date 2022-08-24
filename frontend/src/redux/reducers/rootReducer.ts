@@ -7,6 +7,7 @@ import categoryReducer from "./categoryReducer";
 import commentReducer from "./commentReducer";
 import homeBlogsReducer from "./homeBlogsReducer";
 import otherInfoReducer from "./otherInfoReducer";
+import socketReducer from "./socketReducer";
 
 export const rootReducer = combineReducers({
  alert: alertReducer,
@@ -16,5 +17,6 @@ export const rootReducer = combineReducers({
  categories: categoryReducer,
  comments: commentReducer,
  homeBlogs: homeBlogsReducer,
- otherInfo: otherInfoReducer
+ otherInfo: otherInfoReducer,
+ socket: socketReducer
 });
