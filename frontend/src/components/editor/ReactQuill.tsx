@@ -6,10 +6,11 @@ import { ALERT } from '../../redux/types/alertTypes';
 import { checkImg, uploadImg } from '../../utils/UploadImg';
 
 interface QuillProp {
+ body: string;
  setBody: (value: string) => void;
 }
 
-const Quill: React.FC<QuillProp> = ({ setBody }) => {
+const Quill: React.FC<QuillProp> = ({ body, setBody }) => {
   const dispatch = useAppDispatch();
   const quillRef = useRef<ReactQuill>(null);
 
@@ -73,7 +74,7 @@ const Quill: React.FC<QuillProp> = ({ setBody }) => {
 
   return (
     <div>
-     <ReactQuill theme='snow' modules={modules} placeholder='Write something...' onChange={e => setBody(e)} ref={quillRef}></ReactQuill>
+     <ReactQuill theme='snow' modules={modules} placeholder='Write something...' onChange={e => setBody(e)} value={body} ref={quillRef}></ReactQuill>
     </div>
   );
 }

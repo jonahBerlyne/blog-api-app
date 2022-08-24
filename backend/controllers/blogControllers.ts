@@ -232,6 +232,23 @@ export const getBlog = async (req: Request, res: Response) => {
  }
 }
 
+export const updateBlog = async (req: ReqAuthInt, res: Response) => {
+ if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
+
+ try {
+  const blog = await blogModel.findOneAndUpdate({
+   _id: req.params.id,
+   user: req.user._id
+  }, req.body);
+
+  if (!blog) return res.status(400).json({ msg: "Invalid Authentication" });
+
+  res.json({ msg: 'Update successful', blog });
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
+ }
+}
+
 const Pagination = (req: ReqAuthInt) => {
  let page = Number(req.query.page) * 1 || 1;
  let limit = Number(req.query.limit) * 1 || 4;

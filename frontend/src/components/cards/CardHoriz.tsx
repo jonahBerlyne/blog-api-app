@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { BlogInt } from '../../utils/tsDefs';
+import { Link, useParams } from 'react-router-dom';
+import { useAppSelector } from '../../redux/hooks';
+import { BlogInt, ParamsInt, RootStore, UserInt } from '../../utils/tsDefs';
 
 interface CardProp {
   blog: BlogInt
@@ -8,6 +9,10 @@ interface CardProp {
 
 const CardHoriz: React.FC<CardProp
 > = ({ blog }) => {
+  const { slug }: ParamsInt = useParams();
+
+  const { auth } = useAppSelector((state: RootStore) => state);
+
   return (
     <div className="card mb-3" style={{minWidth: "280px"}}>
      <div className="row g-0 p-2">
@@ -33,11 +38,23 @@ const CardHoriz: React.FC<CardProp
             </Link>
            </h5>
            <p className="card-text">{blog.description}</p>
-           <p className="card-text">
-            <small className="text-muted">
-             {new Date(blog.createdAt).toLocaleString()}
-            </small>
-           </p>
+           {
+            blog.title &&
+            <p className="card-text d-flex justify-content-between">
+              {
+                (slug && (blog.user as UserInt)._id === auth.user?._id) &&
+                <small>
+                  <Link to={`/update_blog/${blog._id}`}>
+                    Update
+                  </Link>
+                </small>
+              }
+
+              <small className="text-muted">
+                {new Date(blog.createdAt).toLocaleString()}
+              </small>
+            </p>
+           }
          </div>
        </div>
      </div>

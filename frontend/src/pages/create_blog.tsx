@@ -3,14 +3,19 @@ import CardHoriz from '../components/cards/CardHoriz';
 import CreateForm from '../components/cards/CreateForm';
 import Quill from '../components/editor/ReactQuill';
 import NotFound from '../components/global/NotFound';
-import { createBlog } from '../redux/actions/blogActions';
+import { createBlog, updateBlog } from '../redux/actions/blogActions';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { ALERT } from '../redux/types/alertTypes';
-import { BlogInt, RootStore } from '../utils/tsDefs';
+import { getAPI } from '../utils/FetchData';
+import { BlogInt, RootStore, UserInt } from '../utils/tsDefs';
 import { uploadImg } from '../utils/UploadImg';
-import { validCreateBlog } from '../utils/Validator';
+import { validCreateBlog, shallowEqual } from '../utils/Validator';
 
-const CreateBlog = () => {
+interface CreateProp {
+  id?: string;
+}
+
+const CreateBlog: React.FC<CreateProp> = ({ id }) => {
   const initialState = {
    user: '',
    title: '',
@@ -29,6 +34,26 @@ const CreateBlog = () => {
 
   const { auth } = useAppSelector((state: RootStore) => state);
   const dispatch = useAppDispatch();
+
+  const [oldData, setOldData] = useState<BlogInt>(initialState);
+
+  useEffect(() => {
+    if (!id) return;
+
+    getAPI(`blog/${id}`)
+    .then(res => {
+      setBlog(res.data);
+      setBody(res.data.content);
+      setOldData(res.data);
+    })
+    .catch(err => console.log(err));
+
+    return () => {
+      setBlog(initialState);
+      setBody('');
+      setOldData(initialState);
+    }
+  }, [id]);
 
   useEffect(() => {
    const div = divRef.current;
@@ -59,7 +84,26 @@ const CreateBlog = () => {
       content: body
     };
 
-    dispatch(createBlog(newData, auth.access_token));
+    if (id) {
+      if ((blog.user as UserInt)._id !== auth.user?._id) return dispatch({
+        type: ALERT,
+        payload: {
+          errors: "Invalid Authentication"
+        }
+      });
+
+      const result = shallowEqual(oldData, newData);
+      if (result) return dispatch({
+        type: ALERT,
+        payload: {
+          errors: "The data is the same"
+        }
+      });
+      
+      dispatch(updateBlog(newData, auth.access_token));
+    } else {
+      dispatch(createBlog(newData, auth.access_token));
+    }
   }
 
   if (!auth.access_token) return <NotFound />;
@@ -77,7 +121,7 @@ const CreateBlog = () => {
       </div>
      </div>
 
-     <Quill setBody={setBody} />
+     <Quill setBody={setBody} body={body} />
 
      <div ref={divRef} dangerouslySetInnerHTML={{
       __html: body
@@ -87,7 +131,7 @@ const CreateBlog = () => {
      </small>
 
      <button className='btn btn-dark mt-3 d-block mx-auto' onClick={handleSubmit}>
-      Create Post
+      { id ? 'Update Post' : 'Create Post' }
      </button>
     </div>
   );
