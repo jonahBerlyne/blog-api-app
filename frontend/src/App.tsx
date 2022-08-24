@@ -11,6 +11,7 @@ import { getHomeBlogs } from './redux/actions/blogActions';
 
 import io from 'socket.io-client';
 import { SOCKET } from './redux/types/socketTypes';
+import SocketClient from './SocketClient';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -35,6 +36,7 @@ const App = () => {
   
   return (
     <div className="container">
+      <SocketClient />
       <Router>
         <Alert />
         <Header />

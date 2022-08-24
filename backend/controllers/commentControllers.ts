@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import commentModel from "../models/commentModel";
 import { ReqAuthInt } from "../config/interface";
 import mongoose from "mongoose";
+import { io } from "../app";
 
 export const createComment = async (req: ReqAuthInt, res: Response) => {
  if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
@@ -19,6 +20,14 @@ export const createComment = async (req: ReqAuthInt, res: Response) => {
    blog_id,
    blog_user_id
   });
+
+  const data = {
+    ...newComment._doc,
+    user: req.user,
+    createdAt: new Date().toISOString()
+  };
+
+  io.to(`${blog_id}`).emit('createComment', data);
 
   await newComment.save();
   
@@ -155,6 +164,15 @@ export const replyComment = async (req: ReqAuthInt, res: Response) => {
    $push: { reply_comment: newComment._id }
   });
 
+  const data = {
+    ...newComment._doc,
+    user: req.user,
+    reply_user,
+    createdAt: new Date().toISOString()
+  };
+
+  io.to(`${blog_id}`).emit('replyComment', data);
+
   await newComment.save();
   
   res.json(newComment);
@@ -167,14 +185,16 @@ export const updateComment = async (req: ReqAuthInt, res: Response) => {
  if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
 
  try {
-  const { content } = req.body;
+  const { data } = req.body;
 
   const comment = await commentModel.findOneAndUpdate({
     _id: req.params.id,
     user: req.user.id
-  }, { content });
+  }, { content: data.content });
 
   if (!comment) return res.status(400).json({ msg: "Comment doesn't exist" });
+
+  io.to(`${data.blog_id}`).emit('updateComment', data);
   
   res.json({ msg: "Update Successful" });
  } catch (error: any) {
@@ -205,6 +225,8 @@ export const deleteComment = async (req: ReqAuthInt, res: Response) => {
     // delete all comments in reply comment
     await commentModel.deleteMany({_id: {$in: comment.reply_comment}});
   }
+
+  io.to(`${comment.blog_id}`).emit('deleteComment', comment);
   
   res.json({ msg: "Comment deleted" });
  } catch (error: any) {

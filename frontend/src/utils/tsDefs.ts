@@ -66,7 +66,7 @@ export interface CommentInt {
  blog_id: string;
  blog_user_id: string;
  content: string;
- reply_comment?: CommentInt[];
+ reply_comment: CommentInt[];
  reply_user?: UserInt;
  comment_root?: string;
  createdAt: string;

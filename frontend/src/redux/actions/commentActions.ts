@@ -6,15 +6,7 @@ import { CreateCommentTypeInt, CREATE_COMMENT, DeleteTypeInt, DELETE_COMMENT, DE
 
 export const createComment = (data: CommentInt, token: string) => async (dispatch: Dispatch<AlertTypeInt | CreateCommentTypeInt>) => {
  try {
-  const res = await postAPI('comment', data, token);
-
-  dispatch({
-   type: CREATE_COMMENT,
-   payload: {
-    ...res.data, 
-    user: data.user
-   }
-  });
+  await postAPI('comment', data, token);
  } catch (error: any) {
   dispatch({
    type: ALERT,
@@ -49,16 +41,7 @@ export const getComments = (id: string, num: number) => async (dispatch: Dispatc
 
 export const replyComment = (data: CommentInt, token: string) => async (dispatch: Dispatch<AlertTypeInt | ReplyCommentTypeInt>) => {
  try {
-  const res = await postAPI('reply_comment', data, token);
-
-  dispatch({
-   type: REPLY_COMMENT,
-   payload: {
-    ...res.data, 
-    user: data.user,
-    reply_user: data.reply_user
-   }
-  });
+  await postAPI('reply_comment', data, token);
  } catch (error: any) {
   dispatch({
    type: ALERT,
@@ -76,9 +59,7 @@ export const updateComment = (data: CommentInt, token: string) => async (dispatc
    payload: data
   });
 
-  await patchAPI(`comment/${data._id}`, {
-   content: data.content
-  }, token);
+  await patchAPI(`comment/${data._id}`, { data }, token);
 
  } catch (error: any) {
   dispatch({

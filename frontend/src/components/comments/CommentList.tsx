@@ -31,6 +31,7 @@ const CommentList: React.FC<CommentProps> = ({ comment, showReply, setShowReply 
       blog_id: comment.blog_id,
       blog_user_id: comment.blog_user_id,
       content: body,
+      reply_comment: [],
       reply_user: comment.user,
       comment_root: comment.comment_root || comment._id,
       createdAt: new Date().toISOString()

@@ -23,7 +23,7 @@ const commentReducer = (state: CommentStateInt = initialState, action: CommentTy
           ...item,
           reply_comment: [
             action.payload,
-            ...item.reply_comment as []
+            ...item.reply_comment
           ]
         } : item
       ))

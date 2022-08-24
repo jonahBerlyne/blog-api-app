@@ -31,6 +31,7 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
       user: auth.user,
       blog_id: (blog._id as string),
       blog_user_id: (blog.user as UserInt)._id,
+      reply_comment: [],
       createdAt: new Date().toISOString()
     };
 
