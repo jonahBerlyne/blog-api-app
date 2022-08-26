@@ -48,10 +48,20 @@ const CreateBlog: React.FC<CreateProp> = ({ id }) => {
     })
     .catch(err => console.log(err));
 
+    const initialData = {
+      user: '',
+      title: '',
+      content: '',
+      description: '',
+      thumbnail: '',
+      category: '',
+      createdAt: new Date().toISOString()
+    }; 
+
     return () => {
-      setBlog(initialState);
+      setBlog(initialData);
       setBody('');
-      setOldData(initialState);
+      setOldData(initialData);
     }
   }, [id]);
 

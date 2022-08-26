@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useAppSelector } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { BlogInt, ParamsInt, RootStore, UserInt } from '../../utils/tsDefs';
 
 interface CardProp {
@@ -12,6 +12,15 @@ const CardHoriz: React.FC<CardProp
   const { slug }: ParamsInt = useParams();
 
   const { auth } = useAppSelector((state: RootStore) => state);
+  const dispatch = useAppDispatch();
+
+  const handleDelete = () => {
+    if (!auth.user || !auth.access_token) return;
+
+    if (window.confirm("Do you want to delete this post?")) {
+      dispatch(deleteBlog(blog, auth.access_token));
+    }
+  }
 
   return (
     <div className="card mb-3" style={{minWidth: "280px"}}>
@@ -40,20 +49,21 @@ const CardHoriz: React.FC<CardProp
            <p className="card-text">{blog.description}</p>
            {
             blog.title &&
-            <p className="card-text d-flex justify-content-between">
+            <div className="card-text d-flex justify-content-between align-items-center">
               {
-                (slug && (blog.user as UserInt)._id === auth.user?._id) &&
-                <small>
+                (slug === auth.user?._id) &&
+                <div style={{ cursor: "pointer" }}>
                   <Link to={`/update_blog/${blog._id}`}>
-                    Update
+                    <i className="fas fa-edit" title="edit" />
                   </Link>
-                </small>
+                  <i className="fas fa-trash text-danger mx-3" title="edit" onClick={handleDelete} />
+                </div>
               }
 
               <small className="text-muted">
                 {new Date(blog.createdAt).toLocaleString()}
               </small>
-            </p>
+            </div>
            }
          </div>
        </div>
