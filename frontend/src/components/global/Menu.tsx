@@ -39,6 +39,12 @@ const Menu = () => {
 
   const dispatch = useAppDispatch();
 
+  const handleLogout = () => {
+    if (!auth.access_token) return;
+
+    dispatch(logout(auth.access_token));
+  }
+
   return (
    <ul className="navbar-nav ms-auto">
     {navLinks.map((link, index) => {
@@ -63,7 +69,7 @@ const Menu = () => {
         <div className="dropdown-menu">
           <Link className="dropdown-item" to={`/profile/${auth.user._id}`}>Profile</Link>
           <div className="dropdown-divider"></div>
-          <Link className="dropdown-item" to="/" onClick={() => dispatch(logout())}>Logout</Link>
+          <Link className="dropdown-item" to="/" onClick={handleLogout}>Logout</Link>
         </div>
       </li>
     }

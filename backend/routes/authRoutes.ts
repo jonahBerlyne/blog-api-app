@@ -11,6 +11,7 @@ import {
  register,
  verifySMS
 } from "../controllers/authController";
+import auth from "../middleware/auth";
 import { validRegister } from "../middleware/validator";
 
 const router = express.Router();
@@ -19,7 +20,7 @@ router.post("/register", validRegister, register);
 router.post("/activate", activateAccount);
 router.post("/login", login);
 
-router.get("/logout", logout);
+router.get("/logout", auth, logout);
 router.get("/refresh_token", refreshToken);
 
 router.post("/google_login", googleLogin);

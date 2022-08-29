@@ -4,6 +4,7 @@ import { postAPI, getAPI } from "../../utils/FetchData";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
 import { UserLoginInt, UserRegisterInt } from "../../utils/tsDefs";
 import { validRegister, validPhone } from "../../utils/Validator";
+import { checkTokenExp } from "../../utils/checkTokenExp";
 
 export const login = (userLogin: UserLoginInt) => async (dispatch: Dispatch<AuthTypeInt | AlertTypeInt>) => {
  try {
@@ -102,14 +103,17 @@ export const refreshToken = () => async (dispatch: Dispatch<AuthTypeInt | AlertT
  }
 }
 
-export const logout = () => async (dispatch: Dispatch<AuthTypeInt | AlertTypeInt>) => {
+export const logout = (token: string) => async (dispatch: Dispatch<AuthTypeInt | AlertTypeInt>) => {
+ const result = await checkTokenExp(token, dispatch);
+ const access_token = result ? result : token;
+ 
  try {
   localStorage.removeItem('logged');
   dispatch({
     type: AUTH,
     payload: {}
   });
-  await getAPI('logout');
+  await getAPI('logout', access_token);
  } catch (error: any) {
   dispatch({
    type: ALERT,

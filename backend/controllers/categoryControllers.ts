@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import categoryModel from "../models/categoryModel";
 import { ReqAuthInt } from "../config/interface";
+import blogModel from "../models/blogModel";
 
 export const createCategory = async (req: ReqAuthInt, res: Response) => {
  if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
@@ -57,7 +58,14 @@ export const deleteCategory = async (req: ReqAuthInt, res: Response) => {
  if (req.user.role !== "admin") return res.status(400).json({ msg: "Invalid Authentication" });
 
  try {
-  await categoryModel.findByIdAndDelete(req.params.id);
+  const blog = await blogModel.findOne({ category: req.params.id });
+
+  if (blog) return res.status(400).json({ msg: "Unable to delete category due to blogs existing inside the category. Please delete the blogs within the category before deleting the category itself." });
+
+  const category = await categoryModel.findByIdAndDelete(req.params.id);
+
+  if (!category) return res.status(400).json({ msg: "Category doesn't exist" });
+
   res.json({ msg: "Category deleted" });
  } catch (error: any) {
   return res.status(500).json({ msg: error.message });

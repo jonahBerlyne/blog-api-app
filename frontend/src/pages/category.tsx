@@ -34,7 +34,8 @@ const Category = () => {
 
   const handleDelete = (id: string) => {
     if (!auth.access_token) return;
-    dispatch(deleteCategory(id, auth.access_token));
+    
+    if (window.confirm('Are you sure you want to delete this category?')) dispatch(deleteCategory(id, auth.access_token));
   }
 
   if (auth.user?.role !== 'admin') return <NotFound />;

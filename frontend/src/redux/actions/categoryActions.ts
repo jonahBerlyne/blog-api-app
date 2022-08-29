@@ -4,7 +4,12 @@ import { CategoryInt } from "../../utils/tsDefs";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
 import { CategoryType, CREATE_CATEGORY, DELETE_CATEGORY, GET_CATEGORIES, UPDATE_CATEGORY } from "../types/categoryTypes";
 
+import { checkTokenExp } from '../../utils/checkTokenExp';
+
 export const createCategory = (name: string, token: string) => async (dispatch: Dispatch<AlertTypeInt | CategoryType>) => {
+ const result = await checkTokenExp(token, dispatch);
+ const access_token = result ? result : token;
+
  try {
   dispatch({
    type: ALERT,
@@ -13,7 +18,7 @@ export const createCategory = (name: string, token: string) => async (dispatch: 
    }
   });
 
-  const res = await postAPI('category', { name }, token);
+  const res = await postAPI('category', { name }, access_token);
 
   dispatch({
    type: CREATE_CATEGORY,
@@ -69,13 +74,16 @@ export const getCategories = () => async (dispatch: Dispatch<AlertTypeInt | Cate
 }
 
 export const updateCategory = (data: CategoryInt, token: string) => async (dispatch: Dispatch<AlertTypeInt | CategoryType>) => {
+ const result = await checkTokenExp(token, dispatch);
+ const access_token = result ? result : token;
+
  try {
   dispatch({
    type: UPDATE_CATEGORY,
    payload: data
   });
 
-  await patchAPI(`category/${data._id}`, { name: data.name }, token);
+  await patchAPI(`category/${data._id}`, { name: data.name }, access_token);
 
  } catch (error: any) {
   dispatch({
@@ -88,13 +96,16 @@ export const updateCategory = (data: CategoryInt, token: string) => async (dispa
 }
 
 export const deleteCategory = (id: string, token: string) => async (dispatch: Dispatch<AlertTypeInt | CategoryType>) => {
+ const result = await checkTokenExp(token, dispatch);
+ const access_token = result ? result : token;
+
  try {
   dispatch({
    type: DELETE_CATEGORY,
    payload: id
   });
 
-  await deleteAPI(`category/${id}`, token);
+  await deleteAPI(`category/${id}`, access_token);
 
  } catch (error: any) {
   dispatch({

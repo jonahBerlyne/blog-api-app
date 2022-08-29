@@ -6,7 +6,7 @@ import { generateActiveToken, generateAccessToken, generateRefreshToken } from "
 import sendEmail from "../config/sendMail";
 import { sendSMS, smsOTP, smsVerify } from "../config/sendSMS";
 import { validPhone, validEmail } from "../middleware/validator";
-import { UserInt, DecodedTokenInt, GooglePayloadInt, UserParamsInt } from "../config/interface";
+import { UserInt, DecodedTokenInt, GooglePayloadInt, UserParamsInt, ReqAuthInt } from "../config/interface";
 import { OAuth2Client } from 'google-auth-library';
 import fetch from 'node-fetch';
 
@@ -104,11 +104,18 @@ export const login = async (req: Request, res: Response) => {
  }
 }
 
-export const logout = (req: Request, res: Response) => {
+export const logout = async (req: ReqAuthInt, res: Response) => {
+ if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
+
  try {
   res.clearCookie("refreshtoken", {
    path: `/api/refresh_token`
   });
+
+  await userModel.findOneAndUpdate({ _id: req.user._id }, {
+   rf_token: ""
+  });
+
   res.json({ msg: "Logged out" });
  } catch (error: any) {
   res.status(500).json({ msg: error.message });
@@ -125,6 +132,8 @@ export const refreshToken = async (req: Request, res: Response) => {
   
   const user = await userModel.findById(decoded.id).select("-password +rf_token");
   if (!user) return res.status(400).json({ msg: "This account doesn't exist" });
+
+  if (rf_token !== user.rf_token) return res.status(400).json({ msg: "Please login" });
 
   const access_token = generateAccessToken({ id: user._id });
   const refresh_token = generateRefreshToken({ id: user._id }, res);
@@ -202,7 +211,8 @@ export const googleLogin = async (req: Request, res: Response) => {
    await userModel.findOneAndUpdate({ _id: newUser._id }, {
     rf_token: refresh_token
    });
-   
+
+   newUser.rf_token = refresh_token;
    await newUser.save();
    
    res.json({ 
@@ -279,6 +289,7 @@ export const facebookLogin = async (req: Request, res: Response) => {
     rf_token: refresh_token
    });
    
+   newUser.rf_token = refresh_token;
    await newUser.save();
    
    res.json({ 
@@ -360,6 +371,7 @@ export const verifySMS = async (req: Request, res: Response) => {
     rf_token: refresh_token
    });
    
+   newUser.rf_token = refresh_token;
    await newUser.save();
    
    res.json({ 

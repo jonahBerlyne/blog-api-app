@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import { checkTokenExp } from "../../utils/checkTokenExp";
 import { getAPI, patchAPI } from "../../utils/FetchData";
 import { checkImg, uploadImg } from "../../utils/UploadImg";
 import { checkPassword } from "../../utils/Validator";
@@ -8,6 +9,9 @@ import { GetOtherInfoTypeInt, GET_OTHER_INFO } from "../types/profileTypes";
 
 export const updateUser = (avatar: File, name: string, auth: AuthInt) => async (dispatch: Dispatch<AlertTypeInt | AuthTypeInt>) => {
  if (!auth.access_token || !auth.user) return;
+
+ const result = await checkTokenExp(auth.access_token, dispatch);
+ const access_token = result ? result : auth.access_token;
 
  let url = '';
 
@@ -49,7 +53,7 @@ export const updateUser = (avatar: File, name: string, auth: AuthInt) => async (
   const res = await patchAPI('user', { 
     avatar: url ? url : auth.user.avatar, 
     name: url ? url : auth.user.avatar 
-  }, auth.access_token);
+  }, access_token);
 
   dispatch({
    type: ALERT,
@@ -68,6 +72,9 @@ export const updateUser = (avatar: File, name: string, auth: AuthInt) => async (
 }
 
 export const resetPassword = (password: string, confirmPassword: string, token: string) => async (dispatch: Dispatch<AlertTypeInt | AuthTypeInt>) => {
+ const result = await checkTokenExp(token, dispatch);
+ const access_token = result ? result : token;
+
  const msg = checkPassword(password, confirmPassword);
 
  if (msg) return dispatch({
@@ -85,7 +92,7 @@ export const resetPassword = (password: string, confirmPassword: string, token: 
    }
   });
 
-  const res = await patchAPI('reset_password', { password }, token);
+  const res = await patchAPI('reset_password', { password }, access_token);
 
   dispatch({
    type: ALERT,
