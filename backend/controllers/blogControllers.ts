@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import blogModel from "../models/blogModel";
 import { ReqAuthInt } from "../config/interface";
 import mongoose from "mongoose";
+import commentModel from "../models/commentModel";
 
 export const createBlog = async (req: ReqAuthInt, res: Response) => {
  if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
@@ -20,7 +21,10 @@ export const createBlog = async (req: ReqAuthInt, res: Response) => {
 
   await newBlog.save();
   
-  res.json({ newBlog });
+  res.json({ 
+   ...newBlog._doc,
+   user: req.user
+  });
  } catch (error: any) {
   return res.status(500).json({ msg: error.message });
  }
@@ -244,6 +248,24 @@ export const updateBlog = async (req: ReqAuthInt, res: Response) => {
   if (!blog) return res.status(400).json({ msg: "Invalid Authentication" });
 
   res.json({ msg: 'Update successful', blog });
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
+ }
+}
+
+export const deleteBlog = async (req: ReqAuthInt, res: Response) => {
+ if (!req.user) return res.status(400).json({ msg: "Invalid Authentication" });
+
+ try {
+  const blog = await blogModel.findOneAndDelete({
+   _id: req.params.id,
+   user: req.user._id
+  });
+
+  if (!blog) return res.status(400).json({ msg: "Invalid Authentication" });
+
+  await commentModel.deleteMany({ blog_id: blog._id });
+  res.json({ msg: 'Delete successful' });
  } catch (error: any) {
   return res.status(500).json({ msg: error.message });
  }

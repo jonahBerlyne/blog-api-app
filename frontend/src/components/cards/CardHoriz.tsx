@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { deleteBlog } from '../../redux/actions/blogActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { ALERT } from '../../redux/types/alertTypes';
 import { BlogInt, ParamsInt, RootStore, UserInt } from '../../utils/tsDefs';
 
 interface CardProp {
@@ -16,6 +18,13 @@ const CardHoriz: React.FC<CardProp
 
   const handleDelete = () => {
     if (!auth.user || !auth.access_token) return;
+
+    if (slug !== auth.user._id) return dispatch ({
+      type: ALERT,
+      payload: {
+        errors: "Invalid Authentication"
+      }
+    });
 
     if (window.confirm("Do you want to delete this post?")) {
       dispatch(deleteBlog(blog, auth.access_token));

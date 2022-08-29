@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { BlogInt } from "../config/interface";
 const Schema = mongoose.Schema;
 
 const Blog = new Schema({
@@ -35,4 +36,4 @@ const Blog = new Schema({
  }
 }, { timestamps: true });
 
-export default mongoose.model("Blog", Blog);
+export default mongoose.model<BlogInt>("Blog", Blog);

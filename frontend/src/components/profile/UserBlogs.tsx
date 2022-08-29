@@ -42,7 +42,7 @@ const UserBlogs = () => {
 
   if (!blogs) return <Loading />;
 
-  if (blogs.length === 0) return (
+  if (blogs.length === 0 && total < 1) return (
     <h3 className='text-center'>No Blogs</h3>
   );
 
@@ -56,13 +56,10 @@ const UserBlogs = () => {
         }
       </div>
       <div>
-        {
-          total > 1 &&
-          <Pagination 
+        <Pagination 
           total={total}
           callback={handlePagination}
-          />
-        }
+        />
       </div>
     </div>
   );

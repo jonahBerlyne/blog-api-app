@@ -1,11 +1,11 @@
 import { Dispatch } from "redux";
-import { getAPI, putAPI, postAPI } from "../../utils/FetchData";
+import { getAPI, putAPI, postAPI, deleteAPI } from "../../utils/FetchData";
 import { BlogInt } from "../../utils/tsDefs";
 import { uploadImg } from "../../utils/UploadImg";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
-import { GetBlogsCategoryTypeInt, GetHomeBlogsTypeInt, GET_BLOGS_BY_CATEGORY_ID, GET_HOME_BLOGS, GET_BLOGS_BY_USER_ID, GetBlogsUserTypeInt } from "../types/blogTypes";
+import { GetBlogsCategoryTypeInt, GetHomeBlogsTypeInt, GET_BLOGS_BY_CATEGORY_ID, GET_HOME_BLOGS, GET_BLOGS_BY_USER_ID, GetBlogsUserTypeInt, CREATE_BLOGS_BY_USER_ID, CreateBlogsUserTypeInt, DeleteBlogsUserTypeInt, DELETE_BLOGS_BY_USER_ID } from "../types/blogTypes";
 
-export const createBlog = (blog: BlogInt, token: string) => async (dispatch: Dispatch<AlertTypeInt>) => {
+export const createBlog = (blog: BlogInt, token: string) => async (dispatch: Dispatch<AlertTypeInt | CreateBlogsUserTypeInt>) => {
  let url = '';
 
  try {
@@ -28,7 +28,12 @@ export const createBlog = (blog: BlogInt, token: string) => async (dispatch: Dis
    thumbnail: url
   };
 
-  await postAPI('blog', newBlog, token);
+  const res = await postAPI('blog', newBlog, token);
+
+  dispatch({
+   type: CREATE_BLOGS_BY_USER_ID,
+   payload: res.data
+  });
 
   dispatch({
    type: ALERT,
@@ -187,6 +192,32 @@ export const updateBlog = (blog: BlogInt, token: string) => async (dispatch: Dis
     success: res.data.msg
    }
   });
+ } catch (error: any) {
+  dispatch({
+   type: ALERT,
+   payload: {
+    errors: error.response.data.msg
+   }
+  });
+ }
+}
+
+export const deleteBlog = (blog: BlogInt, token: string) => async (dispatch: Dispatch<AlertTypeInt | DeleteBlogsUserTypeInt>) => {
+ try {
+  dispatch({
+   type: ALERT,
+   payload: {
+    loading: true
+   }
+  });
+
+  dispatch({
+   type: DELETE_BLOGS_BY_USER_ID,
+   payload: blog
+  });
+
+  await deleteAPI(`/blog/${blog._id}`, token);
+  
  } catch (error: any) {
   dispatch({
    type: ALERT,

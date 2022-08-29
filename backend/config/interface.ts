@@ -53,3 +53,13 @@ export interface CommentInt extends Document {
  comment_root: string;
  _doc: object;
 }
+
+export interface BlogInt extends Document {
+ user: string;
+ title: string;
+ content: string;
+ description: string;
+ thumbnail: string;
+ category: string;
+ _doc: object;
+}
