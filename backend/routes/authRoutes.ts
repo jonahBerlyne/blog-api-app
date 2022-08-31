@@ -3,6 +3,7 @@ import express from "express";
 import {
  activateAccount,
  facebookLogin,
+ forgotPassword,
  googleLogin,
  login,
  loginSMS,
@@ -27,5 +28,6 @@ router.post("/google_login", googleLogin);
 router.post("/facebook_login", facebookLogin);
 router.post("/login_sms", loginSMS);
 router.post("/verify_sms", verifySMS);
+router.post("/forgot_password", forgotPassword);
 
 export default router;

@@ -388,3 +388,30 @@ export const verifySMS = async (req: Request, res: Response) => {
   return res.status(500).json({ msg: error.message });
  }
 }
+
+export const forgotPassword = async (req: Request, res: Response) => {
+ try {
+  const { account } = req.body;
+
+  const user = await userModel.findOne({ account });
+
+  if (!user) return res.status(400).json({ msg: "This account doesn't exist" });
+
+  if (user.type !== 'register') return res.status(400).json({ msg: `Login with ${user.type} can't use this function.` });
+
+  const access_token = generateAccessToken({ id: user._id });
+
+  const url = `${process.env.BASE_URL}/reset_password/${access_token}`;
+
+  if (validPhone(account)) {
+   sendSMS(account, url, "Forgot Password?");
+   return res.json({ msg: "Success! Please check your phone."});
+  } else if (validEmail(account)) {
+   sendEmail(account, url, "Forgot Password?");
+   return res.json({ msg: "Success! Please check your email."});
+  }
+  
+ } catch (error: any) {
+  return res.status(500).json({ msg: error.message });
+ }
+}

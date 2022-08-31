@@ -265,3 +265,32 @@ export const verifySMS = async (phone: string, dispatch: Dispatch<AuthTypeInt | 
   }
 
 }
+
+export const forgotPassword = (account: string) => async (dispatch: Dispatch<AuthTypeInt | AlertTypeInt>) => {
+
+ try {
+  dispatch({
+   type: ALERT,
+   payload: {
+    loading: true
+   }
+  });
+
+  const res = await postAPI('forgot_password', { account });
+
+  dispatch({
+   type: ALERT,
+   payload: {
+    success: res.data.msg
+   }
+  });
+
+ } catch (error: any) {
+  dispatch({
+   type: ALERT,
+   payload: {
+    errors: error.response.data.msg
+   }
+  });
+ }
+}
