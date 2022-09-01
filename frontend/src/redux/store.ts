@@ -1,8 +1,11 @@
+import thunk from 'redux-thunk';
+// import logger from 'redux-logger';
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { rootReducer } from './reducers/rootReducer';
 
 export const store = configureStore({
-  reducer: rootReducer
+  reducer: rootReducer,
+  middleware: [thunk]
 });
 
 export type AppDispatch = typeof store.dispatch;

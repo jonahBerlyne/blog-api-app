@@ -110,9 +110,9 @@ const CreateBlog: React.FC<CreateProp> = ({ id }) => {
         }
       });
       
-      dispatch(updateBlog(newData, auth.access_token));
+      dispatch<any>(updateBlog(newData, auth.access_token));
     } else {
-      dispatch(createBlog(newData, auth.access_token));
+      dispatch<any>(createBlog(newData, auth.access_token));
     }
   }
 

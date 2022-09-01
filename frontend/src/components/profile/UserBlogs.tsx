@@ -24,7 +24,7 @@ const UserBlogs = () => {
     if (!user_id) return;
 
     if (blogsUser.every(item => item.id !== user_id)) {
-      dispatch(getBlogsByUserID(user_id, search));
+      dispatch<any>(getBlogsByUserID(user_id, search));
     } else {
       const data = blogsUser.find(item => item.id === user_id);
       if (!data) return;
@@ -37,7 +37,7 @@ const UserBlogs = () => {
 
   const handlePagination = (num: number) => {
     const search = `?page=${num}`;
-    dispatch(getBlogsByUserID(`${user_id}`, search));
+    dispatch<any>(getBlogsByUserID(`${user_id}`, search));
   }
 
   if (!blogs) return <Loading />;

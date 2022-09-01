@@ -44,10 +44,10 @@ const UserInfo = () => {
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault();
     if (avatar || name) {
-      dispatch(updateUser((avatar as File), name, auth));
+      dispatch<any>(updateUser((avatar as File), name, auth));
     }
     if (password && auth.access_token) {
-      dispatch(resetPassword(password, confirmPassword, auth.access_token));
+      dispatch<any>(resetPassword(password, confirmPassword, auth.access_token));
     }
   }
 

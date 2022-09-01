@@ -11,7 +11,7 @@ const ForgotPassword = () => {
 
   const handleSubmit = (e: FormSubmit) => {
    e.preventDefault();
-   dispatch(forgotPassword(account));
+   dispatch<any>(forgotPassword(account));
   }
 
   return (

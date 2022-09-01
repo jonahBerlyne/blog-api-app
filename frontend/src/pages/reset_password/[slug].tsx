@@ -16,7 +16,7 @@ const ResetPassword = () => {
 
   const handleSubmit = (e: FormSubmit) => {
    e.preventDefault();
-   if (token) dispatch(resetPassword(password, confirmPassword, token));
+   if (token) dispatch<any>(resetPassword(password, confirmPassword, token));
   }
 
   return (

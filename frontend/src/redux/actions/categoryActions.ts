@@ -67,7 +67,7 @@ export const getCategories = () => async (dispatch: Dispatch<AlertTypeInt | Cate
   dispatch({
    type: ALERT,
    payload: {
-    errors: error.response.data.msg
+    errors: error
    }
   });
  }

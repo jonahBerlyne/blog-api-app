@@ -31,7 +31,7 @@ const BlogsByCategory = () => {
     if (!categoryID) return;
 
    if (blogsCategory.every(item => item.id !== categoryID)) {
-    dispatch(getBlogsByCategoryID(categoryID, search));
+    dispatch<any>(getBlogsByCategoryID(categoryID, search));
    } else {
     const data = blogsCategory.find(item => item.id === categoryID);
     if (!data) return;
@@ -44,7 +44,7 @@ const BlogsByCategory = () => {
 
   const handlePagination = (num: number) => {
     const search = `?page=${num}`;
-    dispatch(getBlogsByCategoryID(categoryID, search));
+    dispatch<any>(getBlogsByCategoryID(categoryID, search));
   }
 
   if (!blogs) return <Loading />;

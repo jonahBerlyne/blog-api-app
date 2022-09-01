@@ -36,7 +36,7 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
     };
 
     setShowComments([...showComments, data]);
-    dispatch(createComment(data, auth.access_token));
+    dispatch<any>(createComment(data, auth.access_token));
   }
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
 
   const fetchComments = useCallback(async (id: string, num = 1) => {
     setLoading(true);
-    await dispatch(getComments(id, num));
+    await dispatch<any>(getComments(id, num));
     setLoading(false);
   }, [dispatch]);
 

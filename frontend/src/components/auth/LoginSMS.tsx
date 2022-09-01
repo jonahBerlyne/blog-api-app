@@ -10,7 +10,7 @@ const LoginSMS = () => {
 
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault();
-    dispatch(loginSMS(phone));
+    dispatch<any>(loginSMS(phone));
   }
 
   return (

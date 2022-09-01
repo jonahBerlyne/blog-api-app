@@ -19,7 +19,7 @@ const OtherInfo: React.FC<OtherInfoProp> = ({ id }) => {
     if (!id) return;
 
     if (otherInfo.every(user => user._id !== id)) {
-      dispatch(getOtherInfo(id));
+      dispatch<any>(getOtherInfo(id));
     } else {
       const newUser = otherInfo.find(user => user._id === id);
       if (newUser) setOtherInfo(newUser);

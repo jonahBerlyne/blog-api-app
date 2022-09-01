@@ -38,7 +38,7 @@ const CommentList: React.FC<CommentProps> = ({ comment, showReply, setShowReply 
     };
 
     setShowReply([data, ...showReply]);
-    dispatch(replyComment(data, auth.access_token));
+    dispatch<any>(replyComment(data, auth.access_token));
     setOnReply(false);
   }
 
@@ -53,14 +53,14 @@ const CommentList: React.FC<CommentProps> = ({ comment, showReply, setShowReply 
       ...edit,
       content: body
     };
-    dispatch(updateComment(newComment, auth.access_token));
+    dispatch<any>(updateComment(newComment, auth.access_token));
 
     setEdit(undefined);
   }
 
   const handleDelete = (comment: CommentInt) => {
     if (!auth.user || !auth.access_token) return;
-    dispatch(deleteComment(comment, auth.access_token));
+    dispatch<any>(deleteComment(comment, auth.access_token));
   }
 
   const nav = (comment: CommentInt) => {

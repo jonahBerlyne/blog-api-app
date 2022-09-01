@@ -70,7 +70,7 @@ export const getHomeBlogs = () => async (dispatch: Dispatch<AlertTypeInt | GetHo
    type: GET_HOME_BLOGS,
    payload: res.data
   });
-
+  
   dispatch({
    type: ALERT,
    payload: {
@@ -81,7 +81,7 @@ export const getHomeBlogs = () => async (dispatch: Dispatch<AlertTypeInt | GetHo
   dispatch({
    type: ALERT,
    payload: {
-    errors: error.response.data.msg
+    errors: error
    }
   });
  }

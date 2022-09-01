@@ -10,12 +10,12 @@ const SocialLogin = () => {
 
  const onGoogleSuccess = (googleUser: GoogleLoginResponse) => {
   const id_token = googleUser.getAuthResponse().id_token;
-  dispatch(googleLogin(id_token));
+  dispatch<any>(googleLogin(id_token));
  }
 
  const onFacebookSuccess = (response: FacebookLoginAuthResponse) => {
   const { accessToken, userID } = response.authResponse;
-  dispatch(facebookLogin(accessToken, userID));
+  dispatch<any>(facebookLogin(accessToken, userID));
  }
 
  return (

@@ -23,9 +23,9 @@ const Category = () => {
     if (edit) {
       if (edit.name === name) return;
       const data = { ...edit, name };
-      dispatch(updateCategory(data, auth.access_token));
+      dispatch<any>(updateCategory(data, auth.access_token));
     } else {
-      dispatch(createCategory(name, auth.access_token));
+      dispatch<any>(createCategory(name, auth.access_token));
     }
 
     setName('');
@@ -35,7 +35,7 @@ const Category = () => {
   const handleDelete = (id: string) => {
     if (!auth.access_token) return;
     
-    if (window.confirm('Are you sure you want to delete this category?')) dispatch(deleteCategory(id, auth.access_token));
+    if (window.confirm('Are you sure you want to delete this category?')) dispatch<any>(deleteCategory(id, auth.access_token));
   }
 
   if (auth.user?.role !== 'admin') return <NotFound />;

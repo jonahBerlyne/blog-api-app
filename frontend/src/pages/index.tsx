@@ -8,8 +8,6 @@ import { RootStore } from '../utils/tsDefs';
 const Home = () => {
   const { homeBlogs } = useAppSelector((state: RootStore) => state);
 
-  if (homeBlogs.length === 0) return <Loading />;
-
   return (
     <div className='home_page'>
       {

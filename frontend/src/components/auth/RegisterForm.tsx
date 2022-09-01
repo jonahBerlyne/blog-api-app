@@ -26,7 +26,7 @@ const RegisterForm = () => {
 
   const handleSubmit = (e: FormSubmit): void => {
     e.preventDefault();
-    dispatch(register(userRegister));
+    dispatch<any>(register(userRegister));
   }
 
   return (
@@ -56,7 +56,7 @@ const RegisterForm = () => {
      <div className="form-group mb-3">
       <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
       <div className="password_input">
-       <input type={showConfirmPassword ? "text" : "password"} className="form-control" id="password" name="password" value={confirmPassword} onChange={handleChange} />
+       <input type={showConfirmPassword ? "text" : "password"} className="form-control" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={handleChange} />
 
        <small onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
         {showConfirmPassword ? "Hide" : "Show"}

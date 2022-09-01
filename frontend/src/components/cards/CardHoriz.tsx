@@ -27,7 +27,7 @@ const CardHoriz: React.FC<CardProp
     });
 
     if (window.confirm("Do you want to delete this post?")) {
-      dispatch(deleteBlog(blog, auth.access_token));
+      dispatch<any>(deleteBlog(blog, auth.access_token));
     }
   }
 
