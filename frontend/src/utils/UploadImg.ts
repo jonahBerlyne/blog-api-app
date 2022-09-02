@@ -17,10 +17,10 @@ export const checkImg = (file: File) => {
 export const uploadImg = async (file: File) => {
  const formData = new FormData();
  formData.append('file', file);
- formData.append('upload_preset', `${process.env.CLOUDINARY_UPLOAD_PRESET}`);
- formData.append('cloud_name', `${process.env.CLOUDINARY_CLOUD_NAME}`);
+ formData.append('upload_preset', `${process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET}`);
+ formData.append('cloud_name', `${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}`);
 
- const res = await fetch(`${process.env.CLOUDINARY_API_URL}`, {
+ const res = await fetch(`${process.env.REACT_APP_CLOUDINARY_API_URL}`, {
   method: "POST",
   body: formData
  });
