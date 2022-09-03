@@ -25,13 +25,6 @@ export interface DecodedTokenInt {
  exp: number;
 }
 
-export interface GooglePayloadInt {
- email: string;
- email_verified: boolean;
- name: string;
- picture: string;
-}
-
 export interface UserParamsInt {
  name: string;
  account: string;

@@ -3,7 +3,6 @@ import express from "express";
 import {
  activateAccount,
  forgotPassword,
- googleLogin,
  login,
  loginSMS,
  logout,
@@ -23,7 +22,6 @@ router.post("/login", login);
 router.get("/logout", auth, logout);
 router.get("/refresh_token", refreshToken);
 
-router.post("/google_login", googleLogin);
 router.post("/login_sms", loginSMS);
 router.post("/verify_sms", verifySMS);
 router.post("/forgot_password", forgotPassword);
