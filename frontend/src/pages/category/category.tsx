@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import NotFound from '../components/global/NotFound';
-import { createCategory, deleteCategory, updateCategory } from '../redux/actions/categoryActions';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { CategoryInt, FormSubmit, RootStore } from '../utils/tsDefs';
+import NotFound from '../../components/global/NotFound';
+import { createCategory, deleteCategory, updateCategory } from '../../redux/actions/categoryActions';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { CategoryInt, FormSubmit, RootStore } from '../../utils/tsDefs';
 
 const Category = () => {
   const [name, setName] = useState<string>('');

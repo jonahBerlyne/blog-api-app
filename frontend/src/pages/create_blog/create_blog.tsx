@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import CardHoriz from '../components/cards/CardHoriz';
-import CreateForm from '../components/cards/CreateForm';
-import Quill from '../components/editor/ReactQuill';
-import NotFound from '../components/global/NotFound';
-import { createBlog, updateBlog } from '../redux/actions/blogActions';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { ALERT } from '../redux/types/alertTypes';
-import { getAPI } from '../utils/FetchData';
-import { BlogInt, RootStore, UserInt } from '../utils/tsDefs';
-import { uploadImg } from '../utils/UploadImg';
-import { validCreateBlog, shallowEqual } from '../utils/Validator';
+import CardHoriz from '../../components/cards/CardHoriz';
+import CreateForm from '../../components/cards/CreateForm';
+import Quill from '../../components/editor/ReactQuill';
+import NotFound from '../../components/global/NotFound';
+import { createBlog, updateBlog } from '../../redux/actions/blogActions';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { ALERT } from '../../redux/types/alertTypes';
+import { getAPI } from '../../utils/FetchData';
+import { BlogInt, RootStore, UserInt } from '../../utils/tsDefs';
+import { uploadImg } from '../../utils/UploadImg';
+import { validCreateBlog, shallowEqual } from '../../utils/Validator';
 
 interface CreateProp {
   id?: string;

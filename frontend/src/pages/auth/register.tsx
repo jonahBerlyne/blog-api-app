@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import RegisterForm from '../components/auth/RegisterForm';
+import RegisterForm from '../../components/auth/RegisterForm';
 
 const RegisterPage = () => {
   const location = useLocation();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { forgotPassword } from '../redux/actions/authAction';
-import { useAppDispatch } from '../redux/hooks';
-import { FormSubmit } from '../utils/tsDefs';
+import { forgotPassword } from '../../redux/actions/authAction';
+import { useAppDispatch } from '../../redux/hooks';
+import { FormSubmit } from '../../utils/tsDefs';
 
 const ForgotPassword = () => {
   const [account, setAccount] = useState<string>('');

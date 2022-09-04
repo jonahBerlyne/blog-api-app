@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import LoginPass from '../components/auth/LoginPass';
-import LoginSMS from '../components/auth/LoginSMS';
-import { useAppSelector } from '../redux/hooks';
-import { RootStore } from '../utils/tsDefs';
+import LoginPass from '../../components/auth/LoginPass';
+import LoginSMS from '../../components/auth/LoginSMS';
+import { useAppSelector } from '../../redux/hooks';
+import { RootStore } from '../../utils/tsDefs';
 
 const LoginPage = () => {
   const [sms, setSms] = useState<boolean>(false);

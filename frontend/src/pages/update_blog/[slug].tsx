@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ParamsInt } from '../../utils/tsDefs';
-import CreateBlog from '../create_blog';
+import CreateBlog from '../create_blog/create_blog';
 
 const UpdateBlog = () => {
   const { slug }: ParamsInt = useParams();
