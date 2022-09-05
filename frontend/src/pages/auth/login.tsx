@@ -31,7 +31,7 @@ const LoginPage = () => {
           <span className="col-6">
             <Link to="/forgot_password" className='col-6'>Forgot Password?</Link>
           </span>
-          <span className="col-6 text-end" onClick={() => setSms(!sms)}>
+          <span data-testid='smsToggle' className="col-6 text-end" onClick={() => setSms(!sms)}>
             Sign in with {sms ? "password" : "SMS"}
           </span>
         </small>
