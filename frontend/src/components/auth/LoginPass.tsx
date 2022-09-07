@@ -27,16 +27,16 @@ const LoginPass = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form data-testid="regLoginForm" onSubmit={handleSubmit}>
      <div className="form-group mb-3">
       <label htmlFor="account" className="form-label">Email/Phone</label>
-      <input type="text" className="form-control" id="account" name="account" value={account} onChange={handleChange} />
+      <input data-testid="account" type="text" className="form-control" id="account" name="account" value={account} onChange={handleChange} />
      </div>
 
      <div className="form-group mb-3">
       <label htmlFor="password" className="form-label">Password</label>
       <div className="password_input">
-       <input type={showPassword ? "text" : "password"} className="form-control" id="password" name="password" value={password} onChange={handleChange} />
+       <input data-testid="password" type={showPassword ? "text" : "password"} className="form-control" id="password" name="password" value={password} onChange={handleChange} />
 
        <small onClick={() => setShowPassword(!showPassword)}>
         {showPassword ? "Hide" : "Show"}
@@ -44,7 +44,7 @@ const LoginPass = () => {
       </div>
      </div>
 
-     <button className="btn btn-dark w-100 mt-1" type='submit' disabled={(account && password) ? false : true}>Login</button>
+     <button data-testid="loginBtn" className="btn btn-dark w-100 mt-1" type='submit' disabled={(account && password) ? false : true}>Login</button>
     </form>
   );
 }

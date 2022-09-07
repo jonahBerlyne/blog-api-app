@@ -14,7 +14,7 @@ const LoginSMS = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form data-testid="smsLoginForm" onSubmit={handleSubmit}>
      <div className="form-group mb-3">
       <label htmlFor="phone" className="form-label">Phone</label>
       <input type="text" className='form-control' id='phone' value={phone} onChange={e => setPhone(e.target.value)} placeholder='+0123456789' />
