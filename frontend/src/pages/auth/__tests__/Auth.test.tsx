@@ -1,20 +1,14 @@
 import React from "react";
-import { render, screen, cleanup, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { BrowserRouter as Router } from "react-router-dom";
 import * as ReactRouter from 'react-router';
-import { useAppDispatch } from "../../../redux/hooks";
-import * as ReactRedux from "react-redux";
+import * as ReduxHooks from "../../../redux/hooks";
+import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import thunk from 'redux-thunk';
 import LoginPage from "../login";
-
-const mockDispatchFn = jest.fn()
-
-jest.mock('hooks/redux', () => ({
-  ...jest.requireActual('hooks/redux'),
-  useAppDispatch: () => mockDispatchFn,
-}));
+import RegisterPage from "../register";
 
 describe("Login Page", () => {
  const useLocation = jest.spyOn(ReactRouter, 'useLocation');
@@ -34,16 +28,20 @@ describe("Login Page", () => {
    }
   });
 
+  const dispatch = jest.fn();
+  const useAppDispatch = jest.spyOn(ReduxHooks, 'useAppDispatch').mockReturnValue(dispatch);
+
   const { container } = render(
-   <ReactRedux.Provider store={store}>
+   <Provider store={store}>
     <Router>
      <LoginPage />
     </Router>
-   </ReactRedux.Provider>
+   </Provider>
   );
 
   return {
-   container
+   container,
+   useAppDispatch
   };
  }
 
@@ -65,13 +63,70 @@ describe("Login Page", () => {
  });
  
  it("logs in the user", () => {
-  setup();
+  const { useAppDispatch } = setup();
 
   fireEvent.change(screen.getByTestId("account"), {target: {value: "example@example.com"}});
   fireEvent.change(screen.getByTestId("password"), {target: {value: "example"}});
 
   fireEvent.click(screen.getByTestId("loginBtn"));
   
-  expect(mockDispatchFn).toBeCalled();
+  expect(useAppDispatch).toBeCalled();
+ });
+
+ it("logs in the user via sms", () => {
+  const { useAppDispatch } = setup();
+
+  fireEvent.click(screen.getByTestId("smsToggle"));
+  fireEvent.change(screen.getByTestId("phone"), {target: {value: "1234567890"}});
+  fireEvent.click(screen.getByTestId("smsLoginBtn"));
+  
+  expect(useAppDispatch).toBeCalled();
+ });
+});
+
+describe("Register Page", () => {
+ const useLocation = jest.spyOn(ReactRouter, 'useLocation');
+    
+ beforeEach(() => {
+  useLocation.mockReturnValue({ search: '?testQueryParameters' } as any);
+ });
+
+ const setup = () => {
+  const mockStore = configureMockStore([thunk]);
+
+  const store = mockStore({});
+
+  const dispatch = jest.fn();
+  const useAppDispatch = jest.spyOn(ReduxHooks, 'useAppDispatch').mockReturnValue(dispatch);
+
+  const { container } = render(
+   <Provider store={store}>
+    <Router>
+     <RegisterPage />
+    </Router>
+   </Provider>
+  );
+
+  return {
+   container,
+   useAppDispatch
+  };
+ }
+
+ it("renders the register page", () => {
+  const { container } = setup();
+  expect(container).toMatchSnapshot();
+ });
+
+ it("registers the user", () => {
+  const { useAppDispatch } = setup();
+
+  fireEvent.change(screen.getByTestId("name"), {target: {value: "exampleName"}});
+  fireEvent.change(screen.getByTestId("account"), {target: {value: "example@example.com"}});
+  fireEvent.change(screen.getByTestId("password"), {target: {value: "examplePassword"}});
+  fireEvent.change(screen.getByTestId("confirmPassword"), {target: {value: "examplePassword"}});
+  fireEvent.click(screen.getByTestId("registerBtn"));
+  
+  expect(useAppDispatch).toBeCalled();
  });
 });

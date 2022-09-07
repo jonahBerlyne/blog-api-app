@@ -17,9 +17,9 @@ const LoginSMS = () => {
     <form data-testid="smsLoginForm" onSubmit={handleSubmit}>
      <div className="form-group mb-3">
       <label htmlFor="phone" className="form-label">Phone</label>
-      <input type="text" className='form-control' id='phone' value={phone} onChange={e => setPhone(e.target.value)} placeholder='+0123456789' />
+      <input data-testid="phone" type="text" className='form-control' id='phone' value={phone} onChange={e => setPhone(e.target.value)} placeholder='+0123456789' />
      </div>
-     <button className="btn btn-dark w-100" type="submit" disabled={phone === '' ? true : false}>Login</button>
+     <button data-testid="smsLoginBtn" className="btn btn-dark w-100" type="submit" disabled={phone === '' ? true : false}>Login</button>
     </form>
   );
 }

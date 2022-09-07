@@ -34,18 +34,18 @@ const RegisterForm = () => {
 
      <div className="form-group mb-3">
       <label htmlFor="name" className="form-label">Name</label>
-      <input type="text" className="form-control" id="name" name="name" value={name} onChange={handleChange} />
+      <input data-testid='name' type="text" className="form-control" id="name" name="name" value={name} onChange={handleChange} />
      </div>
 
      <div className="form-group mb-3">
       <label htmlFor="account" className="form-label">Email/Phone</label>
-      <input type="text" className="form-control" id="account" name="account" value={account} onChange={handleChange} />
+      <input data-testid='account' type="text" className="form-control" id="account" name="account" value={account} onChange={handleChange} />
      </div>
 
      <div className="form-group mb-3">
       <label htmlFor="password" className="form-label">Password</label>
       <div className="password_input">
-       <input type={showPassword ? "text" : "password"} className="form-control" id="password" name="password" value={password} onChange={handleChange} />
+       <input data-testid='password' type={showPassword ? "text" : "password"} className="form-control" id="password" name="password" value={password} onChange={handleChange} />
 
        <small onClick={() => setShowPassword(!showPassword)}>
         {showPassword ? "Hide" : "Show"}
@@ -56,7 +56,7 @@ const RegisterForm = () => {
      <div className="form-group mb-3">
       <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
       <div className="password_input">
-       <input type={showConfirmPassword ? "text" : "password"} className="form-control" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={handleChange} />
+       <input data-testid='confirmPassword' type={showConfirmPassword ? "text" : "password"} className="form-control" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={handleChange} />
 
        <small onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
         {showConfirmPassword ? "Hide" : "Show"}
@@ -64,7 +64,7 @@ const RegisterForm = () => {
       </div>
      </div>
 
-     <button className="btn btn-dark w-100 my-1" type='submit' disabled={(account && password) ? false : true}>Login</button>
+     <button data-testid='registerBtn' className="btn btn-dark w-100 my-1" type='submit' disabled={(account && password) ? false : true}>Register</button>
     </form>
   );
 }
