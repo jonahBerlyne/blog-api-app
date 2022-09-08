@@ -28,9 +28,9 @@ export const Alert = () => {
 }
 
 export const showErrMsg = (msg: string) => {
-  return <div className="errMsg">{msg}</div>;
+  return <div data-testid='errMsg' className="errMsg">{msg}</div>;
 }
 
 export const showSuccessMsg = (msg: string) => {
-  return <div className="successMsg">{msg}</div>;
+  return <div data-testid='successMsg' className="successMsg">{msg}</div>;
 }

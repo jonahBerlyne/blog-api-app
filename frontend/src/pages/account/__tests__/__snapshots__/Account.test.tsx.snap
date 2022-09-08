@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Account Activation Page renders the account activation page 1`] = `
+<div>
+  <div>
+    <div
+      class="successMsg"
+      data-testid="successMsg"
+    >
+      Success Msg Example
+    </div>
+  </div>
+</div>
+`;

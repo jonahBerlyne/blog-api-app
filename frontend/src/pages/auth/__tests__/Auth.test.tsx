@@ -7,8 +7,8 @@ import * as ReduxHooks from "../../../redux/hooks";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import thunk from 'redux-thunk';
-import LoginPage from "../login";
-import RegisterPage from "../register";
+import LoginPage from "../pages/login";
+import RegisterPage from "../pages/register";
 
 describe("Login Page", () => {
  const useLocation = jest.spyOn(ReactRouter, 'useLocation');
