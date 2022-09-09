@@ -66,7 +66,7 @@ const CommentList: React.FC<CommentProps> = ({ comment, showReply, setShowReply 
   const nav = (comment: CommentInt) => {
     return (
       <div>
-        <i className='fas fa-trash-alt mx-2' onClick={() => handleDelete(comment)} />
+        <i data-testid='deleteComment' className='fas fa-trash-alt mx-2' onClick={() => handleDelete(comment)} />
         <i className='fas fa-edit me-2' onClick={() => setEdit(comment)} />
       </div>
     );
@@ -87,7 +87,7 @@ const CommentList: React.FC<CommentProps> = ({ comment, showReply, setShowReply 
           }} />
 
           <div className="d-flex justify-content-between p-2">
-            <small style={{ cursor: 'pointer' }}onClick={() => setOnReply(!onReply)}>
+            <small data-testid='setOnReply' style={{ cursor: 'pointer' }} onClick={() => setOnReply(!onReply)}>
               {onReply ? 'Cancel' : 'Reply'}
             </small>
 

@@ -37,7 +37,7 @@ const Input: React.FC<InputProps> = ({ callback, edit, setEdit }) => {
       __html: body
      }} style={{ display: 'none' }} />
 
-     <button className='btn btn-dark ms-auto d-block px-4 mt-2' onClick={handleSubmit}>{edit ? 'Update' : 'Send'}</button>
+     <button data-testid='inputBtn' className='btn btn-dark ms-auto d-block px-4 mt-2' onClick={handleSubmit}>{edit ? 'Update' : 'Send'}</button>
     </div>
   );
 }

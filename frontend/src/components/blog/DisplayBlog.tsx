@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { createComment, getComments } from '../../redux/actions/commentActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { BlogInt, CommentInt, RootStore, UserInt } from '../../utils/tsDefs';
@@ -21,7 +21,6 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const location = useLocation();
-  const navigate = useNavigate();
 
   const handleComment = (body: string) => {
     if (!auth.user || !auth.access_token) return;
@@ -40,6 +39,8 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
   }
 
   useEffect(() => {
+    console.log(`comments: ${comments}`);
+    console.log(`comments.data: ${comments.data}`);
     setShowComments(comments.data);
   }, [comments.data]);
 
@@ -62,12 +63,12 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
 
   return (
     <div>
-     <h2 className='text-center my-3 text-capitalize fs-1' style={{ color: "#ff7a00" }}>
+     <h2 data-testid='blogTitle' className='text-center my-3 text-capitalize fs-1' style={{ color: "#ff7a00" }}>
       {blog.title}
      </h2>
 
      <div className='text-end fst-italic' style={{ color: 'teal' }}>
-      <small>
+      <small data-testid='blogUserName'>
        {
         typeof(blog.user) !== "string" &&
         `By: ${blog.user.name}`

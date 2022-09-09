@@ -7,7 +7,17 @@
 
 # testing
 /coverage
+/src/pages/account/__tests__/__snapshots__
 /src/pages/auth/__tests__/__snapshots__
+/src/pages/blog/__tests__/__snapshots__
+/src/pages/blogs/__tests__/__snapshots__
+/src/pages/category/__tests__/__snapshots__
+/src/pages/create_blog/__tests__/__snapshots__
+/src/pages/forgot_password/__tests__/__snapshots__
+/src/pages/home/__tests__/__snapshots__
+/src/pages/profile/__tests__/__snapshots__
+/src/pages/reset_password/__tests__/__snapshots__
+/src/pages/update_blog/__tests__/__snapshots__
 
 # production
 /build

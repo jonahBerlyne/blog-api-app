@@ -9,9 +9,9 @@ interface AvatarProps {
 const AvatarComment: React.FC<AvatarProps> = ({ user }) => {
   return (
     <div className='avatar_comment'>
-     <img src={user.avatar} alt="avatar" />
+     <img data-testid='userAvatar' src={user.avatar} alt="avatar" />
 
-     <small className="d-block text-break">
+     <small data-testid='userName' className="d-block text-break">
       <Link to={`/profile/${user._id}`}>
        {user.name}
       </Link>
