@@ -39,8 +39,6 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
   }
 
   useEffect(() => {
-    console.log(`comments: ${comments}`);
-    console.log(`comments.data: ${comments.data}`);
     setShowComments(comments.data);
   }, [comments.data]);
 
@@ -80,7 +78,7 @@ const DisplayBlog: React.FC<DisplayBlogInt> = ({ blog }) => {
       </small>
      </div>
 
-     <div dangerouslySetInnerHTML={{
+     <div data-testid='blogContent' dangerouslySetInnerHTML={{
       __html: blog.content
      }} />
 

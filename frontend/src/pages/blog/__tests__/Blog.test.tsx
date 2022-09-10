@@ -3,7 +3,6 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { BrowserRouter as Router } from "react-router-dom";
 import * as ReactRouter from 'react-router';
-import * as ReduxHooks from "../../../redux/hooks";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import thunk from 'redux-thunk';
@@ -49,9 +48,6 @@ describe("Blog Page", () => {
    socket: null
   });
 
-  const dispatch = jest.fn();
-  const useAppDispatch = jest.spyOn(ReduxHooks, 'useAppDispatch').mockReturnValue(dispatch);
-
   const { container } = render(
    <Provider store={store}>
     <Router>
@@ -66,8 +62,7 @@ describe("Blog Page", () => {
   });
 
   return {
-   container,
-   useAppDispatch
+   container
   };
  }
 
@@ -87,5 +82,40 @@ describe("Blog Page", () => {
   const { container } = await setup();
 
   expect(container).toMatchSnapshot();
+ });
+
+ it("displays the blog", async () => {
+  (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
+   data: {
+    _id: '0',
+    content: 'This is an example blog post.',
+    title: 'Example Title',
+    user: {
+     name: 'exampleName',
+    },
+    createdAt: '000000'
+   }
+  });
+
+  await setup();
+
+  expect(screen.getByTestId("blogTitle").innerHTML).toEqual("Example Title");
+  expect(screen.getByTestId("blogUserName").innerHTML).toEqual("By: exampleName");
+  expect(screen.getByTestId("blogContent").innerHTML).toEqual("This is an example blog post.");
+ });
+
+ it("fails to display the blog", async () => {
+  (axios.get as jest.MockedFunction<typeof axios.get>).mockRejectedValue({
+   response: {
+    data: {
+     msg: new Error('Error Msg Example').message
+    }
+   }
+  });
+
+  await setup();
+
+  expect(screen.queryByTestId('blogTitle')).not.toBeInTheDocument();
+  expect(screen.getByTestId('errMsg').innerHTML).toEqual('Error Msg Example');
  });
 });
