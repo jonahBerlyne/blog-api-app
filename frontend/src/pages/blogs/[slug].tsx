@@ -28,7 +28,7 @@ const BlogsByCategory = () => {
   const { search } = location;
 
   useEffect(() => {
-    if (!categoryID) return;
+   if (!categoryID) return;
 
    if (blogsCategory.every(item => item.id !== categoryID)) {
     dispatch<any>(getBlogsByCategoryID(categoryID, search));
