@@ -33,25 +33,25 @@ const CreateForm: React.FC<BlogFormProps> = ({ blog, setBlog }) => {
   return (
     <form>
      <div className="form-group position-relative">
-      <input type="text" className='form-control' value={blog.title} name="title" onChange={handleChange} />
+      <input data-testid='blogTitleInput' type="text" className='form-control' value={blog.title} name="title" onChange={handleChange} />
       <small className="text-muted position-absolute" style={{ bottom: 0, right: '3px', opacity: '0.3' }}>
        {blog.title.length}/50
       </small>
      </div>
 
      <div className="form-group my-3">
-      <input type="file" className='form-control' accept="image/*" onChange={handleFileChange} />
+      <input data-testid='imgInput' type="file" className='form-control' accept="image/*" onChange={handleFileChange} />
      </div>
 
      <div className="form-group position-relative">
-      <textarea rows={4} className='form-control' value={blog.description} style={{ resize: 'none'}} name='description' onChange={handleChange} />
+      <textarea data-testid='blogDescriptionInput' rows={4} className='form-control' value={blog.description} style={{ resize: 'none'}} name='description' onChange={handleChange} />
       <small className="text-muted position-absolute" style={{ bottom: 0, right: '3px', opacity: '0.3' }}>
        {blog.description.length}/200
       </small>
      </div>
 
      <div className="form-group my-3">
-      <select className='form-control text-capitalize' name='category' value={blog.category} onChange={handleChange}>
+      <select className='form-control text-capitalize' name='category' data-testid='blogCategoryMenu' value={blog.category} onChange={handleChange}>
        <option value="">Choose a category</option>
        {
         categories.map(category => (

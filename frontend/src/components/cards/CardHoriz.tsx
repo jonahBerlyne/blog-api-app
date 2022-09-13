@@ -41,7 +41,7 @@ const CardHoriz: React.FC<CardProp
            {
             typeof(blog.thumbnail) === 'string' ? 
             <Link to={`/blog/${blog._id}`}>
-             <img src={blog.thumbnail} className="w-100 h-100" alt="thumbnail" style={{ objectFit: 'cover' }} />
+             <img data-testid='blogThumbnail' src={blog.thumbnail} className="w-100 h-100" alt="thumbnail" style={{ objectFit: 'cover' }} />
             </Link> :
             <img src={URL.createObjectURL(blog.thumbnail)} className="w-100 h-100" alt="thumbnail" style={{ objectFit: 'cover' }} />
            }
@@ -51,11 +51,11 @@ const CardHoriz: React.FC<CardProp
        <div className="col-md-8">
          <div className="card-body">
            <h5 className="card-title">
-            <Link to={`/blog/${blog._id}`} className="text-capitalize text-decoration-none">
+            <Link data-testid='blogTitle' to={`/blog/${blog._id}`} className="text-capitalize text-decoration-none">
              {blog.title}
             </Link>
            </h5>
-           <p className="card-text">{blog.description}</p>
+           <p data-testid='blogDescription' className="card-text">{blog.description}</p>
            {
             blog.title &&
             <div className="card-text d-flex justify-content-between align-items-center">
@@ -65,7 +65,7 @@ const CardHoriz: React.FC<CardProp
                   <Link to={`/update_blog/${blog._id}`}>
                     <i className="fas fa-edit" title="edit" />
                   </Link>
-                  <i className="fas fa-trash text-danger mx-3" title="edit" onClick={handleDelete} />
+                  <i data-testid='deleteBtn' className="fas fa-trash text-danger mx-3" title="edit" onClick={handleDelete} />
                 </div>
               }
 

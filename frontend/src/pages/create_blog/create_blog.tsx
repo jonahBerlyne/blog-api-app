@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { ALERT } from '../../redux/types/alertTypes';
 import { getAPI } from '../../utils/FetchData';
 import { BlogInt, RootStore, UserInt } from '../../utils/tsDefs';
-import { uploadImg } from '../../utils/UploadImg';
 import { validCreateBlog, shallowEqual } from '../../utils/Validator';
 
 interface CreateProp {
@@ -68,8 +67,8 @@ const CreateBlog: React.FC<CreateProp> = ({ id }) => {
   useEffect(() => {
    const div = divRef.current;
    if (!div) return;
-   const text = (div?.innerText as string);
-   setText(text);
+   const _text = (div?.textContent as string);
+   setText(_text);
   }, [body]);
 
   const handleSubmit = async () => {
@@ -117,6 +116,7 @@ const CreateBlog: React.FC<CreateProp> = ({ id }) => {
   }
 
   if (!auth.access_token) return <NotFound />;
+  
   return (
     <div className='my-4 create_blog'>
      <div className="row mt-4">
@@ -140,7 +140,7 @@ const CreateBlog: React.FC<CreateProp> = ({ id }) => {
       {text.length}
      </small>
 
-     <button className='btn btn-dark mt-3 d-block mx-auto' onClick={handleSubmit}>
+     <button data-testid='postBtn' className='btn btn-dark mt-3 d-block mx-auto' onClick={handleSubmit}>
       { id ? 'Update Post' : 'Create Post' }
      </button>
     </div>
