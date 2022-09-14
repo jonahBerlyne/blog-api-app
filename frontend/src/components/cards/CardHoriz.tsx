@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { deleteBlog } from '../../redux/actions/blogActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { ALERT } from '../../redux/types/alertTypes';
-import { BlogInt, ParamsInt, RootStore, UserInt } from '../../utils/tsDefs';
+import { BlogInt, ParamsInt, RootStore } from '../../utils/tsDefs';
 
 interface CardProp {
   blog: BlogInt
