@@ -8,7 +8,6 @@ const ForgotPassword = () => {
 
   const dispatch = useAppDispatch();
 
-
   const handleSubmit = (e: FormSubmit) => {
    e.preventDefault();
    dispatch<any>(forgotPassword(account));
@@ -22,9 +21,9 @@ const ForgotPassword = () => {
       <label htmlFor='account'>Email/Phone</label>
 
       <div className="d-flex align-items-center">
-       <input type="text" id="account" className='form-control' name='account' onChange={e => setAccount(e.target.value)} />
+       <input data-testid='account' type="text" id="account" className='form-control' name='account' onChange={e => setAccount(e.target.value)} />
 
-       <button className='btn btn-primary mx-2 d-flex align-items-center' type="submit">
+       <button data-testid='sendBtn' className='btn btn-primary mx-2 d-flex align-items-center' type="submit">
         <i className='fas fa-paper-plane me-2' /> Send
        </button>
       </div>

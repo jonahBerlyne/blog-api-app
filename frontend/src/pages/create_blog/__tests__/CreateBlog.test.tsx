@@ -158,8 +158,6 @@ describe("Create Blog Page", () => {
  });
 
  it("creates a new blog", async () => {
-  getSuccess();
-
   const { useAppDispatch } = await setup(undefined);
 
   global.URL.createObjectURL = jest.fn();
