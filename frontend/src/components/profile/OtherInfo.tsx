@@ -3,7 +3,6 @@ import { getOtherInfo } from '../../redux/actions/userActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { RootStore, UserInt } from '../../utils/tsDefs';
 import Loading from '../global/Loading';
-import NotFound from '../global/NotFound';
 
 interface OtherInfoProp {
   id: string;
@@ -27,24 +26,25 @@ const OtherInfo: React.FC<OtherInfoProp> = ({ id }) => {
   }, [id, dispatch, otherInfo]);
 
   if (!_otherInfo) return <Loading />;
+
   return (
-    <div className='profile_info text-center rounded'>
+    <div data-testid='otherInfo' className='profile_info text-center rounded'>
       <div className="info_avatar">
-        <img src={_otherInfo.avatar} alt="avatar" />
+        <img data-testid='avatar' src={_otherInfo.avatar} alt="avatar" />
       </div>
 
-      <h5 className="text-uppercase text-danger">
+      <h5 data-testid='role' className="text-uppercase text-danger">
         {_otherInfo.role}
       </h5>
 
-      <div>
+      <div data-testid='name'>
         Name: <span className='text-info'>
           {_otherInfo.name}
         </span>
       </div>
 
       <div>Email/Phone</div>
-      <span className='text-info'>
+      <span data-testid='account' className='text-info'>
         {_otherInfo.account}
       </span>
 

@@ -56,25 +56,25 @@ const UserInfo = () => {
   if (!auth.user) return <NotFound />;
 
   return (
-    <form className='profile_info' onSubmit={handleSubmit}>
+    <form data-testid='userInfo' className='profile_info' onSubmit={handleSubmit}>
      <div className="info_avatar">
       <img src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar} alt="Avatar" />
 
       <span>
        <i className="fas fa-camera" />
        <p>Change</p>
-       <input type="file" accept="image/*" name='file' id='file_up' onChange={handleFileChange} />
+       <input data-testid='imgInput' type="file" accept="image/*" name='file' id='file_up' onChange={handleFileChange} />
       </span>
      </div>
 
      <div className="form-group my-3">
       <label htmlFor="name">Name</label>
-      <input type="text" className='form-control' id="name" name="name" defaultValue={auth.user.name} onChange={handleChange} />
+      <input data-testid='name' type="text" className='form-control' id="name" name="name" defaultValue={auth.user.name} onChange={handleChange} />
      </div>
 
      <div className="form-group my-3">
       <label htmlFor="account">Account</label>
-      <input type="text" className='form-control' id="account" name="account" defaultValue={auth.user.account} onChange={handleChange} disabled={true} />
+      <input data-testid='account' type="text" className='form-control' id="account" name="account" defaultValue={auth.user.account} onChange={handleChange} disabled={true} />
      </div>
 
      {
@@ -87,7 +87,7 @@ const UserInfo = () => {
      <div className="form-group my-3">
       <label htmlFor="password">Password</label>
       <div className="password">
-       <input type={showPassword ? 'text' : 'password'} className='form-control' id="password" name="password" value={password} onChange={handleChange} disabled={auth.user.type !== 'register'} />
+       <input data-testid='password' type={showPassword ? 'text' : 'password'} className='form-control' id="password" name="password" value={password} onChange={handleChange} disabled={auth.user.type !== 'register'} />
 
        <small onClick={() => setShowPassword(!showPassword)}>
         { showPassword ? 'Hide' : 'Show'}
@@ -98,7 +98,7 @@ const UserInfo = () => {
      <div className="form-group my-3">
       <label htmlFor="confirmPassword">Confirm Password</label>
       <div className="password">
-       <input type={showConfirmPassword ? 'text' : 'password'} className='form-control' id="password" name="password" value={confirmPassword} onChange={handleChange} disabled={auth.user.type !== 'register'} />
+       <input data-testid='confirmPassword' type={showConfirmPassword ? 'text' : 'password'} className='form-control' id="password" name="password" value={confirmPassword} onChange={handleChange} disabled={auth.user.type !== 'register'} />
 
        <small onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
         { showConfirmPassword ? 'Hide' : 'Show'}
@@ -106,7 +106,7 @@ const UserInfo = () => {
       </div>
      </div>
 
-     <button className='btn btn-dark w-100' type="submit">Update</button>
+     <button data-testid='updateBtn' className='btn btn-dark w-100' type="submit">Update</button>
     </form>
   );
 }

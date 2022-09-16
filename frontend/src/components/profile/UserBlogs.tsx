@@ -8,7 +8,7 @@ import Loading from '../global/Loading';
 import Pagination from '../global/Pagination';
 
 const UserBlogs = () => {
-  const {blogsUser} = useAppSelector((state: RootStore) => state);
+  const { blogsUser } = useAppSelector((state: RootStore) => state);
   const dispatch = useAppDispatch();
   const { slug: user_id }: ParamsInt = useParams();
 
@@ -22,7 +22,7 @@ const UserBlogs = () => {
 
   useEffect(() => {
     if (!user_id) return;
-
+    
     if (blogsUser.every(item => item.id !== user_id)) {
       dispatch<any>(getBlogsByUserID(user_id, search));
     } else {
@@ -40,27 +40,29 @@ const UserBlogs = () => {
     dispatch<any>(getBlogsByUserID(`${user_id}`, search));
   }
 
-  if (!blogs) return <Loading />;
-
-  if (blogs.length === 0 && total < 1) return (
-    <h3 className='text-center'>No Blogs</h3>
-  );
-
   return (
     <div>
-      <div>
-        {
-          blogs.map(blog => (
-            <CardHoriz key={blog._id} blog={blog} />
-          ))
-        }
-      </div>
-      <div>
-        <Pagination 
-          total={total}
-          callback={handlePagination}
-        />
-      </div>
+      {!blogs && <Loading />}
+      {blogs && blogs.length === 0 && total < 1 && 
+        <h3 className='text-center'>No Blogs</h3>
+      }
+      {blogs && (blogs.length > 0 || total >= 1) &&
+       <div>       
+        <div>
+          {
+            blogs.map(blog => (
+              <CardHoriz key={blog._id} blog={blog} />
+            ))
+          }
+        </div>
+        <div>
+          <Pagination 
+            total={total}
+            callback={handlePagination}
+          />
+        </div>
+       </div>
+      }
     </div>
   );
 }

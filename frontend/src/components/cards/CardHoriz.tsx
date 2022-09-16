@@ -19,7 +19,7 @@ const CardHoriz: React.FC<CardProp
   const handleDelete = () => {
     if (!auth.user || !auth.access_token) return;
 
-    if (slug !== auth.user._id) return dispatch ({
+    if (slug !== auth.user._id) return dispatch({
       type: ALERT,
       payload: {
         errors: "Invalid Authentication"
