@@ -8,9 +8,6 @@ import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import thunk from 'redux-thunk';
 import ProfilePage from "../[slug]";
-import axios from "axios";
-import { act } from "react-dom/test-utils";
-import userEvent from "@testing-library/user-event";
 
 describe("Profile Page", () => {
  const useLocation = jest.spyOn(ReactRouter, 'useLocation');
