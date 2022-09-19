@@ -28,4 +28,9 @@ describe("Reset Password Page", () => {
    useAppDispatch
   };
  }
+
+ it("renders the reset password page", () => {
+  const { container } = setup();
+  expect(container).toMatchSnapshot();
+ });
 });
