@@ -26,7 +26,7 @@ const ResetPassword = () => {
       <div className="form-group my-2">
        <label htmlFor="password" className="form-label">Password</label>
        <div className="password_input">
-        <input type={showPassword ? "text" : "password"} className="form-control" id="password" name="password" value={password} onChange={e => setPassword(e.target.value)} />
+        <input data-testid='password' type={showPassword ? "text" : "password"} className="form-control" id="password" name="password" value={password} onChange={e => setPassword(e.target.value)} />
 
         <small onClick={() => setShowPassword(!showPassword)}>
          {showPassword ? "Hide" : "Show"}
@@ -37,7 +37,7 @@ const ResetPassword = () => {
       <div className="form-group my-2">
        <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
        <div className="password_input">
-        <input type={showConfirmPassword ? "text" : "password"} className="form-control" id="password" name="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+        <input data-testid='confirmPassword' type={showConfirmPassword ? "text" : "password"} className="form-control" id="password" name="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
 
         <small onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
          {showConfirmPassword ? "Hide" : "Show"}
@@ -45,7 +45,7 @@ const ResetPassword = () => {
        </div>
       </div>
 
-      <button type="submit" className="btn btn-dark w-100 mt-2">
+      <button data-testid='submitBtn' type="submit" className="btn btn-dark w-100 mt-2">
        Register
       </button>
      </form>

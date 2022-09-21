@@ -33,4 +33,14 @@ describe("Reset Password Page", () => {
   const { container } = setup();
   expect(container).toMatchSnapshot();
  });
+
+ it("resets the password", () => {
+  const { useAppDispatch } = setup();
+
+  fireEvent.change(screen.getByTestId("password"), {target: {value: "newPassword"}});
+  fireEvent.change(screen.getByTestId("confirmPassword"), {target: {value: "newPassword"}});
+  fireEvent.click(screen.getByTestId("submitBtn"));
+
+  expect(useAppDispatch).toBeCalled();
+ });
 });
