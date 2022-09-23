@@ -44,4 +44,27 @@ describe("Update Blog Page", () => {
    useAppDispatch
   };
  }
+
+ const getSuccess = () => (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
+   data: {
+    _id: '0',
+    user: {
+     account: 'example@example.com',
+     password: 'examplePassword',
+     avatar: 'userAvatar.png',
+     createdAt: '000000',
+     name: 'exampleName',
+     role: 'admin',
+     type: 'user',
+     updatedAt: '000001',
+     _id: '0'
+    },
+    title: 'blogTitle',
+    content: 'This is an example blog',
+    description: 'blogDescription',
+    thumbnail: 'blogThumbnail.png',
+    category: 'blogCategoryZero',
+    createdAt: '000000'
+   }
+ });
 });
