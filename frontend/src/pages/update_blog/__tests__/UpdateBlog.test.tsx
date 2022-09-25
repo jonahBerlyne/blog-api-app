@@ -24,7 +24,37 @@ describe("Update Blog Page", () => {
   const useAppDispatch = jest.spyOn(ReduxHooks, 'useAppDispatch').mockReturnValue(dispatch);
 
   const mockStore = configureMockStore([thunk]);
-  const store = mockStore({});
+  const store = mockStore({
+   auth: {
+    access_token: 'access',
+    msg: 'msg',
+    user: {
+     account: 'example@example.com',
+     password: 'examplePassword',
+     avatar: 'userAvatar.png',
+     createdAt: '000000',
+     name: 'exampleName',
+     role: 'admin',
+     type: 'user',
+     updatedAt: '000001',
+     _id: '0'
+    }
+   },
+   categories: [
+    {
+     name: 'blogCategoryZero',
+     createdAt: '000000',
+     updatedAt: '000001',
+     _id: '0'
+    },
+    {
+     name: 'blogCategoryOne',
+     createdAt: '000002',
+     updatedAt: '000003',
+     _id: '1'
+    }
+   ]
+  });
 
   const { container } = render(
    <Provider store={store}>
