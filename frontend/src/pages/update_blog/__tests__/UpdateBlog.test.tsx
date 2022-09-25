@@ -12,6 +12,8 @@ import axios from "axios";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 
+jest.mock('axios');
+
 describe("Update Blog Page", () => {
  afterEach(() => {
   jest.resetAllMocks();
