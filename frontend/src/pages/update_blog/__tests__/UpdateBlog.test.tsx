@@ -99,4 +99,10 @@ describe("Update Blog Page", () => {
     createdAt: '000000'
    }
  });
+
+ it("renders the update blog page", async () => {
+  getSuccess();
+  const { container } = await setup();
+  expect(container).toMatchSnapshot();
+ });
 });
