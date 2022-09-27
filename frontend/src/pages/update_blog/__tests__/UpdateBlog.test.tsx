@@ -19,6 +19,29 @@ describe("Update Blog Page", () => {
   jest.resetAllMocks();
  });
 
+ const getSuccess = () => (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
+   data: {
+    _id: '0',
+    user: {
+     account: 'example@example.com',
+     password: 'examplePassword',
+     avatar: 'userAvatar.png',
+     createdAt: '000000',
+     name: 'exampleName',
+     role: 'admin',
+     type: 'user',
+     updatedAt: '000001',
+     _id: '0'
+    },
+    title: 'blogTitle',
+    content: 'This is an example blog',
+    description: 'blogDescription',
+    thumbnail: 'blogThumbnail.png',
+    category: 'blogCategoryZero',
+    createdAt: '000000'
+   }
+ });
+
  const setup = async () => {
   jest.spyOn(ReactRouter, 'useParams').mockReturnValue({ slug: '0' });
 
@@ -58,6 +81,8 @@ describe("Update Blog Page", () => {
    ]
   });
 
+  getSuccess();
+
   const { container } = render(
    <Provider store={store}>
     <Router>
@@ -77,31 +102,7 @@ describe("Update Blog Page", () => {
   };
  }
 
- const getSuccess = () => (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
-   data: {
-    _id: '0',
-    user: {
-     account: 'example@example.com',
-     password: 'examplePassword',
-     avatar: 'userAvatar.png',
-     createdAt: '000000',
-     name: 'exampleName',
-     role: 'admin',
-     type: 'user',
-     updatedAt: '000001',
-     _id: '0'
-    },
-    title: 'blogTitle',
-    content: 'This is an example blog',
-    description: 'blogDescription',
-    thumbnail: 'blogThumbnail.png',
-    category: 'blogCategoryZero',
-    createdAt: '000000'
-   }
- });
-
- it("renders the update blog page", async () => {
-  getSuccess();
+ it('renders the update blog page', async () => {
   const { container } = await setup();
   expect(container).toMatchSnapshot();
  });
