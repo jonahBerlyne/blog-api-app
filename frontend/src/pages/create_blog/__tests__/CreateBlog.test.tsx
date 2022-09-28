@@ -134,29 +134,6 @@ describe("Create Blog Page", () => {
   expect(useAppDispatch).toBeCalled();
  });
 
- it("updates the blog fetched", async () => {
-  getSuccess();
-
-  const { useAppDispatch } = await setup('0');
-
-  global.URL.createObjectURL = jest.fn();
-  const fakeFile = new File(['example'], 'example.png', { type: 'image/png' });
-  const inputFile = screen.getByTestId(/imgInput/i);
-  
-  fireEvent.change(inputFile, {
-   target: { files: [fakeFile] }
-  });
-  fireEvent.change(screen.getByTestId("blogTitleInput"), {target: {value: "newTitle"}});
-  fireEvent.change(screen.getByTestId("blogDescriptionInput"), {target: {value: "newDescription"}});
-  userEvent.selectOptions(screen.getByTestId("blogCategoryMenu"), "blogCategoryOne");
-
-  expect(screen.getByTestId('postBtn').innerHTML).not.toEqual('Create Post');
-  expect(screen.getByTestId('postBtn').innerHTML).toEqual('Update Post');
-  fireEvent.click(screen.getByTestId('postBtn'));
-
-  expect(useAppDispatch).toBeCalled();
- });
-
  it("creates a new blog", async () => {
   const { useAppDispatch } = await setup(undefined);
 
