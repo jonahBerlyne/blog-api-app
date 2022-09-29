@@ -107,6 +107,14 @@ describe("Update Blog Page", () => {
   expect(container).toMatchSnapshot();
  });
 
+ it("displays the blog fetched", async () => {
+  await setup();
+
+  expect(screen.getByTestId('blogThumbnail').getAttribute('src')).toEqual('blogThumbnail.png');
+  expect(screen.getByTestId('blogTitle').textContent).toEqual('blogTitle');
+  expect(screen.getByTestId('blogDescription').innerHTML).toEqual('blogDescription');
+ });
+
  it("updates the blog fetched", async () => {
   const { useAppDispatch } = await setup();
 
