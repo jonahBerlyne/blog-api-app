@@ -28,6 +28,29 @@ describe("Create Blog Page", () => {
   jest.resetAllMocks();
  });
 
+ const getSuccess = () => (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
+   data: {
+    _id: '0',
+    user: {
+     account: 'example@example.com',
+     password: 'examplePassword',
+     avatar: 'userAvatar.png',
+     createdAt: '000000',
+     name: 'exampleName',
+     role: 'admin',
+     type: 'user',
+     updatedAt: '000001',
+     _id: '0'
+    },
+    title: 'blogTitle',
+    content: 'This is an example blog',
+    description: 'blogDescription',
+    thumbnail: 'blogThumbnail.png',
+    category: 'blogCategoryZero',
+    createdAt: '000000'
+   }
+ });
+
  const setup = async (id: string | undefined) => {
   const dispatch = jest.fn();
   const useAppDispatch = jest.spyOn(ReduxHooks, 'useAppDispatch').mockReturnValue(dispatch);
@@ -66,6 +89,8 @@ describe("Create Blog Page", () => {
    ]
   });
 
+  getSuccess();
+
   const { container } = render(
    <Provider store={store}>
     <Router>
@@ -85,37 +110,12 @@ describe("Create Blog Page", () => {
   };
  }
 
- const getSuccess = () => (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
-   data: {
-    _id: '0',
-    user: {
-     account: 'example@example.com',
-     password: 'examplePassword',
-     avatar: 'userAvatar.png',
-     createdAt: '000000',
-     name: 'exampleName',
-     role: 'admin',
-     type: 'user',
-     updatedAt: '000001',
-     _id: '0'
-    },
-    title: 'blogTitle',
-    content: 'This is an example blog',
-    description: 'blogDescription',
-    thumbnail: 'blogThumbnail.png',
-    category: 'blogCategoryZero',
-    createdAt: '000000'
-   }
- });
-
  it('renders the create blog page', async () => {
-  getSuccess();
   const { container } = await setup('0');
   expect(container).toMatchSnapshot();
  });
 
  it("displays the blog fetched", async () => {
-  getSuccess();
   await setup('0');
 
   expect(screen.getByTestId('blogThumbnail').getAttribute('src')).toEqual('blogThumbnail.png');
@@ -124,7 +124,6 @@ describe("Create Blog Page", () => {
  });
 
  it("deletes the blog fetched", async () => {
-  getSuccess();
   window.confirm = jest.fn(() => true);
 
   const { useAppDispatch } = await setup('0');
