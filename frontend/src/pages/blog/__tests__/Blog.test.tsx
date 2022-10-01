@@ -66,8 +66,7 @@ describe("Blog Page", () => {
   };
  }
 
- it("renders the blog page", async () => {
-  (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
+ const getSuccess = () => (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
    data: {
     _id: '0',
     content: 'This is an example blog post.',
@@ -77,26 +76,16 @@ describe("Blog Page", () => {
     },
     createdAt: '000000'
    }
-  });
+ });
 
+ it("renders the blog page", async () => {
+  getSuccess();
   const { container } = await setup();
-
   expect(container).toMatchSnapshot();
  });
 
  it("displays the blog", async () => {
-  (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValue({
-   data: {
-    _id: '0',
-    content: 'This is an example blog post.',
-    title: 'Example Title',
-    user: {
-     name: 'exampleName',
-    },
-    createdAt: '000000'
-   }
-  });
-
+  getSuccess();
   await setup();
 
   expect(screen.getByTestId("blogTitle").innerHTML).toEqual("Example Title");
