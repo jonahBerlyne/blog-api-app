@@ -78,6 +78,14 @@ describe("Blog Page", () => {
    }
  });
 
+ const getFailure = () => (axios.get as jest.MockedFunction<typeof axios.get>).mockRejectedValue({
+   response: {
+    data: {
+     msg: new Error('Error Msg Example').message
+    }
+   }
+ });
+
  it("renders the blog page", async () => {
   getSuccess();
   const { container } = await setup();
@@ -94,14 +102,7 @@ describe("Blog Page", () => {
  });
 
  it("fails to display the blog", async () => {
-  (axios.get as jest.MockedFunction<typeof axios.get>).mockRejectedValue({
-   response: {
-    data: {
-     msg: new Error('Error Msg Example').message
-    }
-   }
-  });
-
+  getFailure();
   await setup();
 
   expect(screen.queryByTestId('blogTitle')).not.toBeInTheDocument();
