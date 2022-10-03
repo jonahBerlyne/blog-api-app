@@ -39,25 +39,20 @@ describe("Account Activation Page", () => {
   };
  }
 
- it("renders the account activation page", async () => {
-  (axios.post as jest.MockedFunction<typeof axios.post>).mockResolvedValue({
+ const postSuccess = () => (axios.post as jest.MockedFunction<typeof axios.post>).mockResolvedValue({
    data: {
     msg: 'Success Msg Example'
    }
-  });
+ });
 
+ it("renders the account activation page", async () => {
+  postSuccess();
   const { container } = await setup();
-
   expect(container).toMatchSnapshot();
  });
 
  it("shows an account activation success msg", async () => {
-  (axios.post as jest.MockedFunction<typeof axios.post>).mockResolvedValue({
-   data: {
-    msg: 'Success Msg Example'
-   }
-  });
-
+  postSuccess();
   await setup();
 
   expect(screen.queryByTestId('errMsg')).not.toBeInTheDocument();
