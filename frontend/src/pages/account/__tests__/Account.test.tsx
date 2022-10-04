@@ -45,6 +45,14 @@ describe("Account Activation Page", () => {
    }
  });
 
+ const postFailure = () => (axios.post as jest.MockedFunction<typeof axios.post>).mockRejectedValue({
+   response: {
+    data: {
+     msg: new Error('Error Msg Example').message
+    }
+   }
+ });
+
  it("renders the account activation page", async () => {
   postSuccess();
   const { container } = await setup();
@@ -60,14 +68,7 @@ describe("Account Activation Page", () => {
  });
 
  it("shows an account activation error msg", async () => {
-  (axios.post as jest.MockedFunction<typeof axios.post>).mockRejectedValue({
-   response: {
-    data: {
-     msg: new Error('Error Msg Example').message
-    }
-   }
-  });
-
+  postFailure();
   await setup();
 
   expect(screen.queryByTestId('successMsg')).not.toBeInTheDocument();
