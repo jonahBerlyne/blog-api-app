@@ -3,7 +3,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useAppDispatch } from '../../redux/hooks';
 import { ALERT } from '../../redux/types/alertTypes';
-import { checkImg, uploadImg } from '../../utils/UploadImg';
+import { checkImg, uploadImg } from '../../utils/imgValidators';
 
 interface QuillProp {
  body: string;

@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { checkTokenExp } from "../../utils/checkTokenExp";
 import { getAPI, patchAPI } from "../../utils/FetchData";
-import { checkImg, uploadImg } from "../../utils/UploadImg";
+import { checkImg, uploadImg } from "../../utils/imgValidators";
 import { checkPassword } from "../../utils/Validator";
 import { ALERT, AlertTypeInt } from "../types/alertTypes";
 import { AUTH, AuthInt, AuthTypeInt } from "../types/authTypes";
