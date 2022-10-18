@@ -2,7 +2,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { checkTokenExp } from "../checkTokenExp";
 import { postAPI, getAPI, patchAPI, deleteAPI, putAPI } from "../FetchData";
 import { checkImg, uploadImg } from "../imgValidators";
-import { validRegister } from "../Validator";
+import { validRegister, validPhone } from "../Validator";
 
 describe("Check Token Exp Function", () => {});
 
