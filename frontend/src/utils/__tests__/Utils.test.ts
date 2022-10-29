@@ -8,4 +8,6 @@ describe("Check Token Exp Function", () => {});
 
 describe("API Functions", () => {});
 
-describe("Validators", () => {});
+describe("Image Validators", () => {});
+
+describe("Auth Validators", () => {});
