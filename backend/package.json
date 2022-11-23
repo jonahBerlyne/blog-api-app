@@ -5,8 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "nodemon dist/index.js",
+    "client": "cd ../frontend && npm start",
     "dev": "ts-node-dev app.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "concurrently \"npm run dev\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
