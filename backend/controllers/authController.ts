@@ -6,7 +6,7 @@ import { generateActiveToken, generateAccessToken, generateRefreshToken } from "
 import sendEmail from "../config/sendMail";
 import { sendSMS, smsOTP, smsVerify } from "../config/sendSMS";
 import { validPhone, validEmail } from "../middleware/validator";
-import { UserInt, DecodedTokenInt, GooglePayloadInt, UserParamsInt, ReqAuthInt } from "../config/interface";
+import { UserInt, DecodedTokenInt, UserParamsInt, ReqAuthInt } from "../config/interface";
 import { OAuth2Client } from 'google-auth-library';
 import fetch from 'node-fetch';
 
