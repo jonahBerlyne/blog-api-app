@@ -4,7 +4,6 @@ dotenv.config();
 import express from "express";
 import morgan from "morgan";
 import cookieParser from 'cookie-parser';
-import path from 'path';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import { createServer } from 'http';
