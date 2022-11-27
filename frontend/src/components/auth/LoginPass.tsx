@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../redux/hooks';
-import { InputChange, FormSubmit, UserLoginInt } from '../../utils/tsDefs';
+import { InputChange, FormSubmit } from '../../utils/tsDefs';
 import { login } from '../../redux/actions/authAction';
 
 const LoginPass = () => {
